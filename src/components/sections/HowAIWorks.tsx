@@ -281,7 +281,7 @@ function MobileLayout({ active, setActive }: { active: Tab; setActive: (t: Tab) 
           }}
         >
           {/* Statement 1 */}
-          <div ref={stmt1Ref} style={slotStyle}>
+          <div ref={stmt1Ref} style={{ ...slotStyle, opacity: 1 }}>
             <div
               style={{
                 fontFamily: "var(--font-instrument), serif",
@@ -300,7 +300,7 @@ function MobileLayout({ active, setActive }: { active: Tab; setActive: (t: Tab) 
           </div>
 
           {/* Statement 2 */}
-          <div ref={stmt2Ref} style={slotStyle}>
+          <div ref={stmt2Ref} style={{ ...slotStyle, opacity: 0 }}>
             <div
               style={{
                 fontFamily: "var(--font-instrument), serif",
@@ -320,7 +320,7 @@ function MobileLayout({ active, setActive }: { active: Tab; setActive: (t: Tab) 
           </div>
 
           {/* Statement 3 */}
-          <div ref={stmt3Ref} style={slotStyle}>
+          <div ref={stmt3Ref} style={{ ...slotStyle, opacity: 0 }}>
             <div
               style={{
                 fontFamily: "var(--font-instrument), serif",
