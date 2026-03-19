@@ -11,10 +11,3 @@ const nextConfig: NextConfig = {
 };
 
 export default nextConfig;
-```
-
-Then save (`Ctrl+S`). Then back in PowerShell:
-```
-git add .
-git commit -m "fix build"
-git push
