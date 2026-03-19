@@ -5,6 +5,7 @@ import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { motion, AnimatePresence } from "framer-motion";
 import FadeIn from "@/components/animations/FadeIn";
+import ShinyText from "@/components/animations/ShinyText";
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -38,48 +39,6 @@ const panelContent = {
 } as const;
 
 type Tab = keyof typeof panelContent;
-
-const statements = [
-  {
-    text: "We reduce friction without adding complexity.",
-    style: {
-      fontFamily: "var(--font-instrument), serif",
-      fontStyle: "italic" as const,
-      fontSize: "clamp(36px, 5.5vw, 68px)",
-      color: "var(--text-primary)",
-      lineHeight: 1.2,
-      textAlign: "center" as const,
-      maxWidth: "880px",
-      margin: "0 auto",
-    },
-  },
-  {
-    text: "AI Is Making Time to Be Human Again",
-    style: {
-      fontFamily: "var(--font-instrument), serif",
-      fontSize: "clamp(40px, 6vw, 72px)",
-      color: "var(--text-primary)",
-      lineHeight: 1.1,
-      letterSpacing: "-0.02em",
-      textAlign: "center" as const,
-      maxWidth: "880px",
-      margin: "0 auto",
-    },
-  },
-  {
-    text: "Let us find where innovation is sleeping within your operation.",
-    style: {
-      fontFamily: "var(--font-instrument), serif",
-      fontStyle: "italic" as const,
-      fontSize: "clamp(28px, 4vw, 52px)",
-      color: "var(--text-secondary)",
-      lineHeight: 1.3,
-      textAlign: "center" as const,
-      maxWidth: "800px",
-      margin: "0 auto",
-    },
-  },
-];
 
 // ─── Toggle panel (shared between layouts) ───────────────────────────────────
 
@@ -204,7 +163,6 @@ function TogglePanel({ active, setActive }: { active: Tab; setActive: (t: Tab) =
             </h3>
 
             <p
-              data-cursor="text"
               style={{
                 fontFamily: "var(--font-inter), sans-serif",
                 fontSize: "18px",
@@ -261,13 +219,53 @@ function MobileLayout({ active, setActive }: { active: Tab; setActive: (t: Tab) 
       style={{ borderTop: "1px solid var(--border)", backgroundColor: "#F5F4EF" }}
     >
       <div className="container">
-        {statements.map((stmt, i) => (
-          <FadeIn key={i} delay={0} y={40}>
-            <div style={{ marginBottom: "64px" }}>
-              <p style={stmt.style}>{stmt.text}</p>
-            </div>
-          </FadeIn>
-        ))}
+        <FadeIn delay={0} y={40}>
+          <div style={{ marginBottom: "64px", textAlign: "center" }}>
+            <p
+              style={{
+                fontFamily: "var(--font-instrument), serif",
+                fontSize: "clamp(32px, 6vw, 56px)",
+                color: "var(--text-primary)",
+                lineHeight: 1.1,
+                letterSpacing: "-0.02em",
+              }}
+            >
+              AI Is Making Time to Be Human Again
+            </p>
+          </div>
+        </FadeIn>
+
+        <FadeIn delay={0.1} y={40}>
+          <div style={{ marginBottom: "48px", textAlign: "center" }}>
+            <p
+              style={{
+                fontFamily: "var(--font-instrument), serif",
+                fontStyle: "italic",
+                fontSize: "clamp(22px, 4vw, 40px)",
+                color: "var(--text-primary)",
+                lineHeight: 1.2,
+              }}
+            >
+              We reduce friction without adding complexity.
+            </p>
+          </div>
+        </FadeIn>
+
+        <FadeIn delay={0.2} y={40}>
+          <div style={{ marginBottom: "64px", textAlign: "center" }}>
+            <p
+              style={{
+                fontFamily: "var(--font-instrument), serif",
+                fontStyle: "italic",
+                fontSize: "clamp(18px, 3.5vw, 32px)",
+                color: "var(--text-secondary)",
+                lineHeight: 1.3,
+              }}
+            >
+              Let us find where innovation is sleeping within your operation.
+            </p>
+          </div>
+        </FadeIn>
 
         <TogglePanel active={active} setActive={setActive} />
       </div>
@@ -282,7 +280,7 @@ function MobileLayout({ active, setActive }: { active: Tab; setActive: (t: Tab) 
   );
 }
 
-// ─── Desktop: scroll stack ───────────────────────────────────────────────────
+// ─── Desktop: statements + toggle ────────────────────────────────────────────
 
 function DesktopLayout({ active, setActive }: { active: Tab; setActive: (t: Tab) => void }) {
   const outerRef = useRef<HTMLDivElement>(null);
@@ -294,25 +292,25 @@ function DesktopLayout({ active, setActive }: { active: Tab; setActive: (t: Tab)
     const outer = outerRef.current;
     if (!outer) return;
 
-    // Card 0 is visible from the start; cards 1 and 2 start off-screen below
-    if (cardRefs.current[0]) gsap.set(cardRefs.current[0], { y: 0 });
-    if (cardRefs.current[1]) gsap.set(cardRefs.current[1], { y: "100vh" });
-    if (cardRefs.current[2]) gsap.set(cardRefs.current[2], { y: "100vh" });
+    // All cards start below viewport
+    cardRefs.current.forEach((card) => {
+      if (card) gsap.set(card, { y: "100vh" });
+    });
 
-    // Zones 0 and 1 in zoneRefs trigger cards 1 and 2 respectively
-    const triggers = [0, 1].map((i) => {
-      const zone = zoneRefs.current[i];
-      const card = cardRefs.current[i + 1];
-      if (!zone || !card) return null;
+    // Trigger zones — one per statement
+    const triggers = zoneRefs.current.map((zone, i) => {
+      if (!zone) return null;
       return ScrollTrigger.create({
         trigger: zone,
         start: "top center",
         once: false,
         onEnter: () => {
-          gsap.to(card, { y: 0, duration: 0.5, ease: "power2.out" });
+          const card = cardRefs.current[i];
+          if (card) gsap.to(card, { y: 0, duration: 0.5, ease: "power2.out" });
         },
         onLeaveBack: () => {
-          gsap.to(card, { y: "100vh", duration: 0.4, ease: "power2.in" });
+          const card = cardRefs.current[i];
+          if (card) gsap.to(card, { y: "100vh", duration: 0.4, ease: "power2.in" });
         },
       });
     });
@@ -332,33 +330,25 @@ function DesktopLayout({ active, setActive }: { active: Tab; setActive: (t: Tab)
         position: "relative",
       }}
     >
-      {/* Statement scroll stack — 3 × 100vh */}
+      {/* 3 × 80vh scroll container */}
       <div
         ref={outerRef}
-        style={{ position: "relative", height: "calc(3 * 100vh)" }}
+        style={{ position: "relative", height: "calc(3 * 80vh)" }}
       >
-        {/* Trigger zone for card 1 (fires at 33% of wrapper) */}
-        <div
-          ref={(el) => { zoneRefs.current[0] = el; }}
-          style={{
-            position: "absolute",
-            top: "33.33%",
-            height: "33.33%",
-            width: "100%",
-            pointerEvents: "none",
-          }}
-        />
-        {/* Trigger zone for card 2 (fires at 66% of wrapper) */}
-        <div
-          ref={(el) => { zoneRefs.current[1] = el; }}
-          style={{
-            position: "absolute",
-            top: "66.66%",
-            height: "33.34%",
-            width: "100%",
-            pointerEvents: "none",
-          }}
-        />
+        {/* Trigger zones — one per statement, stacked vertically */}
+        {[0, 1, 2].map((i) => (
+          <div
+            key={i}
+            ref={(el) => { zoneRefs.current[i] = el; }}
+            style={{
+              position: "absolute",
+              top: `${i * 33.33}%`,
+              height: "33.33%",
+              width: "100%",
+              pointerEvents: "none",
+            }}
+          />
+        ))}
 
         {/* Sticky container */}
         <div
@@ -369,28 +359,108 @@ function DesktopLayout({ active, setActive }: { active: Tab; setActive: (t: Tab)
             overflow: "hidden",
           }}
         >
-          {statements.map((stmt, i) => (
+          {/* Statement 1 */}
+          <div
+            ref={(el) => { cardRefs.current[0] = el; }}
+            style={{
+              position: "absolute",
+              inset: 0,
+              background: "#F5F4EF",
+              boxShadow: "0 -4px 24px rgba(0,0,0,0.06)",
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "center",
+              zIndex: 1,
+            }}
+          >
             <div
-              key={i}
-              ref={(el) => { cardRefs.current[i] = el; }}
               style={{
-                position: "absolute",
-                inset: 0,
-                backgroundColor: "#F5F4EF",
-                display: "flex",
-                alignItems: "center",
-                justifyContent: "center",
+                fontFamily: "var(--font-instrument), serif",
+                fontSize: "clamp(40px, 6vw, 72px)",
+                textAlign: "center",
                 padding: "0 40px",
-                zIndex: i + 1,
               }}
             >
-              <p style={stmt.style}>{stmt.text}</p>
+              <ShinyText
+                text="AI Is Making Time to Be Human Again"
+                color="#1A1A1A"
+                shineColor="#5F8575"
+                speed={5}
+                spread={100}
+              />
             </div>
-          ))}
+          </div>
+
+          {/* Statement 2 */}
+          <div
+            ref={(el) => { cardRefs.current[1] = el; }}
+            style={{
+              position: "absolute",
+              inset: 0,
+              background: "#F5F4EF",
+              boxShadow: "0 -4px 24px rgba(0,0,0,0.06)",
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "center",
+              zIndex: 2,
+            }}
+          >
+            <div
+              style={{
+                fontFamily: "var(--font-instrument), serif",
+                fontStyle: "italic",
+                fontSize: "clamp(32px, 5vw, 60px)",
+                textAlign: "center",
+                padding: "0 40px",
+              }}
+            >
+              <ShinyText
+                text="We reduce friction without adding complexity."
+                color="#4A4A4A"
+                shineColor="#ffffff"
+                speed={6}
+                spread={110}
+              />
+            </div>
+          </div>
+
+          {/* Statement 3 */}
+          <div
+            ref={(el) => { cardRefs.current[2] = el; }}
+            style={{
+              position: "absolute",
+              inset: 0,
+              background: "#F5F4EF",
+              boxShadow: "0 -4px 24px rgba(0,0,0,0.06)",
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "center",
+              zIndex: 3,
+            }}
+          >
+            <div
+              style={{
+                fontFamily: "var(--font-instrument), serif",
+                fontStyle: "italic",
+                fontSize: "clamp(22px, 3.5vw, 44px)",
+                textAlign: "center",
+                maxWidth: "680px",
+                margin: "0 auto",
+              }}
+            >
+              <ShinyText
+                text="Let us find where innovation is sleeping within your operation."
+                color="#6B6B6B"
+                shineColor="#E5E4E2"
+                speed={7}
+                spread={120}
+              />
+            </div>
+          </div>
         </div>
       </div>
 
-      {/* Toggle section — normal scroll below the stack */}
+      {/* Toggle section */}
       <div style={{ padding: "160px 0" }}>
         <div className="container">
           <TogglePanel active={active} setActive={setActive} />

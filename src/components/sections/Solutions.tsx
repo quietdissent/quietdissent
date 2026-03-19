@@ -321,9 +321,10 @@ export default function Solutions() {
   const wrapperRef = useRef<HTMLDivElement>(null);
   const [activeCard, setActiveCard] = useState(0);
   const [isMobile, setIsMobile] = useState(false);
+  const [mounted, setMounted] = useState(false);
 
   useEffect(() => {
-    if (typeof window === "undefined") return;
+    setMounted(true);
     const check = () => setIsMobile(window.innerWidth < 768);
     check();
     window.addEventListener("resize", check);
@@ -331,10 +332,10 @@ export default function Solutions() {
   }, []);
 
   useEffect(() => {
-    if (typeof window === "undefined" || isMobile) return;
-    if (!wrapperRef.current) return;
+    if (!mounted || isMobile) return;
+    if (!wrapperRef.current || !containerRef.current) return;
 
-    const cardEls = gsap.utils.toArray<HTMLElement>(".service-card");
+    const cardEls = gsap.utils.toArray<HTMLElement>(".service-card", containerRef.current);
 
     const tween = gsap.to(cardEls, {
       xPercent: -100 * (cardEls.length - 1),
@@ -359,14 +360,16 @@ export default function Solutions() {
       tween.scrollTrigger?.kill();
       tween.kill();
     };
-  }, [isMobile]);
+  }, [mounted, isMobile]);
+
+  if (!mounted) return null;
 
   const isDarkCard = activeCard % 2 === 0;
   const dotActive = isDarkCard ? "rgba(255,255,255,0.8)" : "#1A1A1A";
   const dotInactive = isDarkCard ? "rgba(255,255,255,0.2)" : "rgba(26,26,26,0.2)";
 
   return (
-    <section id="solutions" className="light-section" style={{ overflow: "hidden", backgroundColor: "#F5F4EF" }}>
+    <section id="solutions" className="light-section" style={{ backgroundColor: "#F5F4EF", overflowX: "hidden" }}>
       {/* Section header */}
       <div style={{ padding: "120px 0 60px", borderTop: "1px solid var(--border)", position: "relative", zIndex: 1 }}>
         <div className="container">
