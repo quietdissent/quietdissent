@@ -208,51 +208,31 @@ function TogglePanel({ active, setActive }: { active: Tab; setActive: (t: Tab) =
   );
 }
 
-// ─── Mobile: sticky scroll-driven reveal ─────────────────────────────────────
+// ─── Mobile: scroll-progress statement reveal ────────────────────────────────
 
 function MobileLayout({ active, setActive }: { active: Tab; setActive: (t: Tab) => void }) {
   const outerRef = useRef<HTMLDivElement>(null);
-  const stmt1Ref = useRef<HTMLDivElement>(null);
-  const stmt2Ref = useRef<HTMLDivElement>(null);
-  const stmt3Ref = useRef<HTMLDivElement>(null);
+  const [activeIndex, setActiveIndex] = useState(0);
 
   useEffect(() => {
-    if (typeof window === "undefined") return;
-    const outer = outerRef.current;
-    const s1 = stmt1Ref.current;
-    const s2 = stmt2Ref.current;
-    const s3 = stmt3Ref.current;
-    if (!outer || !s1 || !s2 || !s3) return;
+    const handleScroll = () => {
+      const outer = outerRef.current;
+      if (!outer) return;
+      const { top, height } = outer.getBoundingClientRect();
+      // top is negative once the section has scrolled past the viewport top
+      const scrolled = -top;
+      const scrollable = height - window.innerHeight;
+      const progress = Math.min(1, Math.max(0, scrolled / scrollable));
 
-    // Set initial visibility: only statement 1 visible
-    gsap.set(s1, { opacity: 1, y: 0 });
-    gsap.set(s2, { opacity: 0, y: 20 });
-    gsap.set(s3, { opacity: 0, y: 20 });
-
-    // Build scrub timeline — duration normalised to 1.0
-    // Transition 1 (~33% scroll): fade stmt1 out, fade stmt2 in
-    // Transition 2 (~66% scroll): fade stmt2 out, fade stmt3 in
-    const tl = gsap.timeline();
-    tl.fromTo(s1, { opacity: 1, y: 0 }, { opacity: 0, y: -20, duration: 0.06, ease: "power1.in" }, 0.30)
-      .fromTo(s2, { opacity: 0, y: 20 }, { opacity: 1, y: 0, duration: 0.06, ease: "power1.out" }, 0.30)
-      .fromTo(s2, { opacity: 1, y: 0 }, { opacity: 0, y: -20, duration: 0.06, ease: "power1.in" }, 0.63)
-      .fromTo(s3, { opacity: 0, y: 20 }, { opacity: 1, y: 0, duration: 0.06, ease: "power1.out" }, 0.63)
-      // Anchor end so timeline duration == 1.0
-      .to({}, { duration: 0.01 }, 0.99);
-
-    const trigger = ScrollTrigger.create({
-      trigger: outer,
-      start: "top top",
-      end: "bottom bottom",
-      scrub: 0.5,
-      animation: tl,
-    });
-
-    return () => {
-      trigger.kill();
-      tl.kill();
-      gsap.set([s1, s2, s3], { clearProps: "all" });
+      if (progress < 0.33) setActiveIndex(0);
+      else if (progress < 0.66) setActiveIndex(1);
+      else setActiveIndex(2);
     };
+
+    handleScroll();
+    requestAnimationFrame(() => handleScroll());
+    window.addEventListener("scroll", handleScroll, { passive: true });
+    return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
   const slotStyle: React.CSSProperties = {
@@ -270,7 +250,7 @@ function MobileLayout({ active, setActive }: { active: Tab; setActive: (t: Tab) 
       className="light-section"
       style={{ borderTop: "1px solid var(--border)", backgroundColor: "#F5F4EF" }}
     >
-      {/* 250vh scroll container — sticky panel reveals statements one at a time */}
+      {/* 250vh scroll container — sticky panel reveals one statement at a time */}
       <div ref={outerRef} style={{ minHeight: "250vh", position: "relative" }}>
         <div
           style={{
@@ -280,65 +260,91 @@ function MobileLayout({ active, setActive }: { active: Tab; setActive: (t: Tab) 
             overflow: "hidden",
           }}
         >
-          {/* Statement 1 */}
-          <div ref={stmt1Ref} style={{ ...slotStyle, opacity: 1 }}>
-            <div
-              style={{
-                fontFamily: "var(--font-instrument), serif",
-                fontSize: "clamp(32px, 6vw, 56px)",
-                textAlign: "center",
-              }}
-            >
-              <ShinyText
-                text="AI Is Making Time to Be Human Again"
-                color="#1A1A1A"
-                shineColor="#5F8575"
-                speed={5}
-                spread={100}
-              />
-            </div>
-          </div>
+          <AnimatePresence mode="wait">
+            {activeIndex === 0 && (
+              <motion.div
+                key="stmt1"
+                style={slotStyle}
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                exit={{ opacity: 0, y: -20 }}
+                transition={{ duration: 0.4 }}
+              >
+                <div
+                  style={{
+                    fontFamily: "var(--font-instrument), serif",
+                    fontSize: "clamp(32px, 6vw, 56px)",
+                    textAlign: "center",
+                  }}
+                >
+                  <ShinyText
+                    text="AI Is Making Time to Be Human Again"
+                    color="#1A1A1A"
+                    shineColor="#5F8575"
+                    speed={5}
+                    spread={100}
+                  />
+                </div>
+              </motion.div>
+            )}
 
-          {/* Statement 2 */}
-          <div ref={stmt2Ref} style={{ ...slotStyle, opacity: 0 }}>
-            <div
-              style={{
-                fontFamily: "var(--font-instrument), serif",
-                fontStyle: "italic",
-                fontSize: "clamp(22px, 4vw, 40px)",
-                textAlign: "center",
-              }}
-            >
-              <ShinyText
-                text="We reduce friction without adding complexity."
-                color="#4A4A4A"
-                shineColor="#ffffff"
-                speed={6}
-                spread={110}
-              />
-            </div>
-          </div>
+            {activeIndex === 1 && (
+              <motion.div
+                key="stmt2"
+                style={slotStyle}
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                exit={{ opacity: 0, y: -20 }}
+                transition={{ duration: 0.4 }}
+              >
+                <div
+                  style={{
+                    fontFamily: "var(--font-instrument), serif",
+                    fontStyle: "italic",
+                    fontSize: "clamp(22px, 4vw, 40px)",
+                    textAlign: "center",
+                  }}
+                >
+                  <ShinyText
+                    text="We reduce friction without adding complexity."
+                    color="#4A4A4A"
+                    shineColor="#ffffff"
+                    speed={6}
+                    spread={110}
+                  />
+                </div>
+              </motion.div>
+            )}
 
-          {/* Statement 3 */}
-          <div ref={stmt3Ref} style={{ ...slotStyle, opacity: 0 }}>
-            <div
-              style={{
-                fontFamily: "var(--font-instrument), serif",
-                fontStyle: "italic",
-                fontSize: "clamp(18px, 3.5vw, 32px)",
-                textAlign: "center",
-                maxWidth: "600px",
-              }}
-            >
-              <ShinyText
-                text="Let us find where innovation is sleeping within your operation."
-                color="#6B6B6B"
-                shineColor="#E5E4E2"
-                speed={7}
-                spread={120}
-              />
-            </div>
-          </div>
+            {activeIndex === 2 && (
+              <motion.div
+                key="stmt3"
+                style={slotStyle}
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                exit={{ opacity: 0, y: -20 }}
+                transition={{ duration: 0.4 }}
+              >
+                <div
+                  style={{
+                    fontFamily: "var(--font-instrument), serif",
+                    fontStyle: "italic",
+                    fontSize: "clamp(18px, 3.5vw, 32px)",
+                    textAlign: "center",
+                    maxWidth: "600px",
+                  }}
+                >
+                  <ShinyText
+                    text="Let us find where innovation is sleeping within your operation."
+                    color="#6B6B6B"
+                    shineColor="#E5E4E2"
+                    speed={7}
+                    spread={120}
+                  />
+                </div>
+              </motion.div>
+            )}
+          </AnimatePresence>
         </div>
       </div>
 
