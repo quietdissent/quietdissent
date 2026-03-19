@@ -219,7 +219,7 @@ function MobileLayout({ active, setActive }: { active: Tab; setActive: (t: Tab) 
       style={{ borderTop: "1px solid var(--border)", backgroundColor: "#F5F4EF" }}
     >
       <div className="container">
-        <FadeIn delay={0} y={40}>
+        <FadeIn y={40} start="top 85%">
           <div style={{ marginBottom: "64px", textAlign: "center" }}>
             <p
               style={{
@@ -235,7 +235,7 @@ function MobileLayout({ active, setActive }: { active: Tab; setActive: (t: Tab) 
           </div>
         </FadeIn>
 
-        <FadeIn delay={0.1} y={40}>
+        <FadeIn y={40} start="top 85%">
           <div style={{ marginBottom: "48px", textAlign: "center" }}>
             <p
               style={{
@@ -251,7 +251,7 @@ function MobileLayout({ active, setActive }: { active: Tab; setActive: (t: Tab) 
           </div>
         </FadeIn>
 
-        <FadeIn delay={0.2} y={40}>
+        <FadeIn y={40} start="top 85%">
           <div style={{ marginBottom: "64px", textAlign: "center" }}>
             <p
               style={{

@@ -89,10 +89,18 @@ export default function Comparison() {
 
         {/* Comparison table */}
         <FadeIn delay={0.15} y={40}>
-          <div style={{ overflowX: "auto" }}>
+          <div style={{ position: "relative" }}>
+            <div
+              // eslint-disable-next-line @typescript-eslint/no-explicit-any
+              style={{
+                overflowX: "auto",
+                WebkitOverflowScrolling: "touch",
+              } as any}
+            >
             <table
               style={{
                 width: "100%",
+                minWidth: "600px",
                 borderCollapse: "collapse",
                 fontFamily: "var(--font-inter), sans-serif",
               }}
@@ -225,6 +233,20 @@ export default function Comparison() {
                 ))}
               </tbody>
             </table>
+            </div>
+            {/* Scroll hint gradient — mobile only */}
+            <div
+              className="md:hidden"
+              style={{
+                position: "absolute",
+                top: 0,
+                right: 0,
+                bottom: 0,
+                width: "48px",
+                background: "linear-gradient(to right, transparent, #F5F4EF)",
+                pointerEvents: "none",
+              }}
+            />
           </div>
         </FadeIn>
       </div>

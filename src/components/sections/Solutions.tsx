@@ -332,7 +332,7 @@ export default function Solutions() {
   }, []);
 
   useEffect(() => {
-    if (!mounted || isMobile) return;
+    if (!mounted) return;
     if (!wrapperRef.current || !containerRef.current) return;
 
     const cardEls = gsap.utils.toArray<HTMLElement>(".service-card", containerRef.current);
@@ -344,8 +344,14 @@ export default function Solutions() {
         trigger: wrapperRef.current,
         pin: true,
         scrub: 1,
-        snap: 1 / (cardEls.length - 1),
-        end: () => "+=" + wrapperRef.current!.offsetWidth,
+        // Object snap form gives smooth snap animation on mobile; desktop keeps same snap points
+        snap: isMobile
+          ? { snapTo: 1 / (cardEls.length - 1), duration: { min: 0.2, max: 0.3 }, ease: "power1.inOut" }
+          : 1 / (cardEls.length - 1),
+        end: () =>
+          "+=" + (isMobile
+            ? window.innerWidth * 0.85 * (cardEls.length - 1)
+            : wrapperRef.current!.offsetWidth),
         onUpdate: (self) => {
           const idx = Math.min(
             Math.floor(self.progress * cardEls.length),
@@ -356,9 +362,14 @@ export default function Solutions() {
       },
     });
 
+    // Ensure ScrollTrigger updates from native scroll events (touch device fallback)
+    const onScroll = () => ScrollTrigger.update();
+    window.addEventListener("scroll", onScroll, { passive: true });
+
     return () => {
       tween.scrollTrigger?.kill();
       tween.kill();
+      window.removeEventListener("scroll", onScroll);
     };
   }, [mounted, isMobile]);
 
@@ -399,64 +410,59 @@ export default function Solutions() {
         </div>
       </div>
 
-      {/* Horizontal scroll — desktop */}
-      {!isMobile && (
+      {/* Horizontal scroll — all screens */}
+      <div
+        ref={wrapperRef}
+        data-cursor="drag"
+        style={{ width: "100%", overflow: "hidden", position: "relative", zIndex: 1 }}
+      >
+        {/* Progress dots */}
         <div
-          ref={wrapperRef}
-          data-cursor="drag"
-          style={{ width: "100%", overflow: "hidden", position: "relative", zIndex: 1 }}
+          style={{
+            position: "absolute",
+            top: "28px",
+            right: "40px",
+            display: "flex",
+            gap: "8px",
+            zIndex: 10,
+          }}
         >
-          {/* Progress dots */}
-          <div
-            style={{
-              position: "absolute",
-              top: "28px",
-              right: "40px",
-              display: "flex",
-              gap: "8px",
-              zIndex: 10,
-            }}
-          >
-            {cards.map((_, i) => (
-              <div
-                key={i}
-                style={{
-                  width: "24px",
-                  height: "2px",
-                  background: i === activeCard ? dotActive : dotInactive,
-                  transition: "background 0.3s ease",
-                }}
-              />
-            ))}
-          </div>
-
-          <div
-            ref={containerRef}
-            style={{ display: "flex", width: "300%" }}
-          >
-            {cards.map((card, i) => (
-              <div
-                key={i}
-                className="service-card"
-                style={{ width: "33.333%", flexShrink: 0, height: "100vh" }}
-              >
-                <ServiceCard card={card} index={i} fullHeight />
-              </div>
-            ))}
-          </div>
+          {cards.map((_, i) => (
+            <div
+              key={i}
+              style={{
+                width: "24px",
+                height: "2px",
+                background: i === activeCard ? dotActive : dotInactive,
+                transition: "background 0.3s ease",
+              }}
+            />
+          ))}
         </div>
-      )}
 
-      {/* Mobile: stacked */}
-      {isMobile && (
-        <div style={{ position: "relative", zIndex: 1 }}>
+        <div
+          ref={containerRef}
+          style={{
+            display: "flex",
+            // Mobile: 85vw per card so next card peeks; desktop: each card fills viewport
+            width: isMobile ? `${cards.length * 85}vw` : "300%",
+          }}
+        >
           {cards.map((card, i) => (
-            <div key={i}>
-              <ServiceCard card={card} index={i} fullHeight={false} />
+            <div
+              key={i}
+              className="service-card"
+              style={{
+                width: isMobile ? "85vw" : "33.333%",
+                flexShrink: 0,
+                height: "100vh",
+              }}
+            >
+              <ServiceCard card={card} index={i} fullHeight />
             </div>
           ))}
         </div>
-      )}
+      </div>
 
       {/* Pricing */}
       <div style={{ padding: "80px 0", borderTop: "1px solid var(--border)", backgroundColor: "#F5F4EF", position: "relative", zIndex: 1 }}>
