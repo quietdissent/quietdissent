@@ -4,7 +4,6 @@ import { useEffect, useRef, useState } from "react";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { motion, AnimatePresence } from "framer-motion";
-import FadeIn from "@/components/animations/FadeIn";
 import ShinyText from "@/components/animations/ShinyText";
 
 gsap.registerPlugin(ScrollTrigger);
@@ -209,65 +208,145 @@ function TogglePanel({ active, setActive }: { active: Tab; setActive: (t: Tab) =
   );
 }
 
-// ─── Mobile: stacked layout ──────────────────────────────────────────────────
+// ─── Mobile: sticky scroll-driven reveal ─────────────────────────────────────
 
 function MobileLayout({ active, setActive }: { active: Tab; setActive: (t: Tab) => void }) {
+  const outerRef = useRef<HTMLDivElement>(null);
+  const stmt1Ref = useRef<HTMLDivElement>(null);
+  const stmt2Ref = useRef<HTMLDivElement>(null);
+  const stmt3Ref = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    if (typeof window === "undefined") return;
+    const outer = outerRef.current;
+    const s1 = stmt1Ref.current;
+    const s2 = stmt2Ref.current;
+    const s3 = stmt3Ref.current;
+    if (!outer || !s1 || !s2 || !s3) return;
+
+    // Set initial visibility: only statement 1 visible
+    gsap.set(s1, { opacity: 1, y: 0 });
+    gsap.set(s2, { opacity: 0, y: 20 });
+    gsap.set(s3, { opacity: 0, y: 20 });
+
+    // Build scrub timeline — duration normalised to 1.0
+    // Transition 1 (~33% scroll): fade stmt1 out, fade stmt2 in
+    // Transition 2 (~66% scroll): fade stmt2 out, fade stmt3 in
+    const tl = gsap.timeline();
+    tl.fromTo(s1, { opacity: 1, y: 0 }, { opacity: 0, y: -20, duration: 0.06, ease: "power1.in" }, 0.30)
+      .fromTo(s2, { opacity: 0, y: 20 }, { opacity: 1, y: 0, duration: 0.06, ease: "power1.out" }, 0.30)
+      .fromTo(s2, { opacity: 1, y: 0 }, { opacity: 0, y: -20, duration: 0.06, ease: "power1.in" }, 0.63)
+      .fromTo(s3, { opacity: 0, y: 20 }, { opacity: 1, y: 0, duration: 0.06, ease: "power1.out" }, 0.63)
+      // Anchor end so timeline duration == 1.0
+      .to({}, { duration: 0.01 }, 0.99);
+
+    const trigger = ScrollTrigger.create({
+      trigger: outer,
+      start: "top top",
+      end: "bottom bottom",
+      scrub: 0.5,
+      animation: tl,
+    });
+
+    return () => {
+      trigger.kill();
+      tl.kill();
+      gsap.set([s1, s2, s3], { clearProps: "all" });
+    };
+  }, []);
+
+  const slotStyle: React.CSSProperties = {
+    position: "absolute",
+    inset: 0,
+    display: "flex",
+    alignItems: "center",
+    justifyContent: "center",
+    padding: "0 24px",
+  };
+
   return (
     <section
       id="how-ai-works"
-      className="section-padding light-section"
+      className="light-section"
       style={{ borderTop: "1px solid var(--border)", backgroundColor: "#F5F4EF" }}
     >
-      <div className="container">
-        <FadeIn y={40} start="top 85%">
-          <div style={{ marginBottom: "64px", textAlign: "center" }}>
-            <p
+      {/* 250vh scroll container — sticky panel reveals statements one at a time */}
+      <div ref={outerRef} style={{ minHeight: "250vh", position: "relative" }}>
+        <div
+          style={{
+            position: "sticky",
+            top: 0,
+            height: "100vh",
+            overflow: "hidden",
+          }}
+        >
+          {/* Statement 1 */}
+          <div ref={stmt1Ref} style={slotStyle}>
+            <div
               style={{
                 fontFamily: "var(--font-instrument), serif",
                 fontSize: "clamp(32px, 6vw, 56px)",
-                color: "var(--text-primary)",
-                lineHeight: 1.1,
-                letterSpacing: "-0.02em",
+                textAlign: "center",
               }}
             >
-              AI Is Making Time to Be Human Again
-            </p>
+              <ShinyText
+                text="AI Is Making Time to Be Human Again"
+                color="#1A1A1A"
+                shineColor="#5F8575"
+                speed={5}
+                spread={100}
+              />
+            </div>
           </div>
-        </FadeIn>
 
-        <FadeIn y={40} start="top 85%">
-          <div style={{ marginBottom: "48px", textAlign: "center" }}>
-            <p
+          {/* Statement 2 */}
+          <div ref={stmt2Ref} style={slotStyle}>
+            <div
               style={{
                 fontFamily: "var(--font-instrument), serif",
                 fontStyle: "italic",
                 fontSize: "clamp(22px, 4vw, 40px)",
-                color: "var(--text-primary)",
-                lineHeight: 1.2,
+                textAlign: "center",
               }}
             >
-              We reduce friction without adding complexity.
-            </p>
+              <ShinyText
+                text="We reduce friction without adding complexity."
+                color="#4A4A4A"
+                shineColor="#ffffff"
+                speed={6}
+                spread={110}
+              />
+            </div>
           </div>
-        </FadeIn>
 
-        <FadeIn y={40} start="top 85%">
-          <div style={{ marginBottom: "64px", textAlign: "center" }}>
-            <p
+          {/* Statement 3 */}
+          <div ref={stmt3Ref} style={slotStyle}>
+            <div
               style={{
                 fontFamily: "var(--font-instrument), serif",
                 fontStyle: "italic",
                 fontSize: "clamp(18px, 3.5vw, 32px)",
-                color: "var(--text-secondary)",
-                lineHeight: 1.3,
+                textAlign: "center",
+                maxWidth: "600px",
               }}
             >
-              Let us find where innovation is sleeping within your operation.
-            </p>
+              <ShinyText
+                text="Let us find where innovation is sleeping within your operation."
+                color="#6B6B6B"
+                shineColor="#E5E4E2"
+                speed={7}
+                spread={120}
+              />
+            </div>
           </div>
-        </FadeIn>
+        </div>
+      </div>
 
-        <TogglePanel active={active} setActive={setActive} />
+      {/* Toggle panel — below the scroll reveal */}
+      <div className="section-padding">
+        <div className="container">
+          <TogglePanel active={active} setActive={setActive} />
+        </div>
       </div>
 
       <style>{`

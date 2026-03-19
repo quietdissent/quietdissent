@@ -316,9 +316,153 @@ function ServiceCard({
   );
 }
 
+// ─── Pricing block (shared) ───────────────────────────────────────────────────
+
+function PricingBlock() {
+  return (
+    <div style={{ padding: "80px 0", borderTop: "1px solid var(--border)", backgroundColor: "#F5F4EF", position: "relative", zIndex: 1 }}>
+      <div className="container">
+        <FadeIn>
+          <div style={{ textAlign: "center" }}>
+            <div style={{ maxWidth: "800px", margin: "0 auto" }}>
+              {[
+                ["AI Readiness Assessment", "$500 flat"],
+                ["Systems Implementation", "Scoped per engagement"],
+                ["Fractional Chief AI Officer", "From $1,500/month"],
+              ].map(([service, price], i) => (
+                <div
+                  key={service}
+                  style={{
+                    display: "flex",
+                    justifyContent: "space-between",
+                    alignItems: "baseline",
+                    padding: "28px 0",
+                    borderBottom: i < 2 ? "1px solid var(--border)" : "none",
+                  }}
+                >
+                  <span
+                    style={{
+                      fontFamily: "var(--font-instrument), serif",
+                      fontSize: "24px",
+                      color: "var(--text-primary)",
+                      textAlign: "left",
+                    }}
+                  >
+                    {service}
+                  </span>
+                  <span
+                    style={{
+                      fontFamily: "var(--font-mono), monospace",
+                      fontSize: "18px",
+                      color: "var(--text-secondary)",
+                      textAlign: "right",
+                      flexShrink: 0,
+                      marginLeft: "24px",
+                    }}
+                  >
+                    {price}
+                  </span>
+                </div>
+              ))}
+            </div>
+
+            <p
+              style={{
+                fontFamily: "var(--font-instrument), serif",
+                fontStyle: "italic",
+                fontSize: "18px",
+                color: "var(--text-muted)",
+                marginTop: "40px",
+                marginBottom: "40px",
+              }}
+            >
+              Every engagement starts with a conversation — not a proposal.
+            </p>
+            <MagneticButton>
+              <motion.a
+                href="#contact"
+                onClick={(e) => {
+                  e.preventDefault();
+                  document.querySelector("#contact")?.scrollIntoView({ behavior: "smooth" });
+                }}
+                style={{
+                  display: "inline-flex",
+                  alignItems: "center",
+                  gap: "8px",
+                  background: "var(--eucalyptus)",
+                  color: "#FFFFFF",
+                  padding: "16px 32px",
+                  borderRadius: "4px",
+                  fontFamily: "var(--font-inter), sans-serif",
+                  fontSize: "15px",
+                  fontWeight: 500,
+                  textDecoration: "none",
+                  marginBottom: "16px",
+                }}
+                whileHover={{ background: "#4A7065" }}
+              >
+                Book a Free Strategy Session →
+              </motion.a>
+            </MagneticButton>
+            <div style={{ marginTop: "16px" }}>
+              <span
+                style={{
+                  fontFamily: "var(--font-inter), sans-serif",
+                  fontSize: "13px",
+                  color: "var(--text-muted)",
+                }}
+              >
+                Nashville-based. Founder-led. You talk to the same person who does the work.
+              </span>
+            </div>
+          </div>
+        </FadeIn>
+      </div>
+    </div>
+  );
+}
+
+// ─── Section header (shared) ──────────────────────────────────────────────────
+
+function SectionHeader() {
+  return (
+    <div style={{ padding: "120px 0 60px", borderTop: "1px solid var(--border)", position: "relative", zIndex: 1 }}>
+      <div className="container">
+        <FadeIn>
+          <h2
+            style={{
+              fontFamily: "var(--font-instrument), serif",
+              fontSize: "clamp(32px, 4.5vw, 56px)",
+              color: "var(--text-primary)",
+              lineHeight: 1.1,
+              letterSpacing: "-0.02em",
+              marginBottom: "16px",
+            }}
+          >
+            Three Ways We Work Together
+          </h2>
+          <p
+            style={{
+              fontFamily: "var(--font-body), serif",
+              fontSize: "19px",
+              color: "var(--text-secondary)",
+            }}
+          >
+            Starting wherever you are. Staying as long as it matters.
+          </p>
+        </FadeIn>
+      </div>
+    </div>
+  );
+}
+
 export default function Solutions() {
+  // Desktop GSAP refs
   const containerRef = useRef<HTMLDivElement>(null);
   const wrapperRef = useRef<HTMLDivElement>(null);
+  // Mobile carousel ref
+  const carouselRef = useRef<HTMLDivElement>(null);
+
   const [activeCard, setActiveCard] = useState(0);
   const [isMobile, setIsMobile] = useState(false);
   const [mounted, setMounted] = useState(false);
@@ -331,11 +475,12 @@ export default function Solutions() {
     return () => window.removeEventListener("resize", check);
   }, []);
 
+  // Desktop only: GSAP horizontal pin
   useEffect(() => {
-    if (!mounted) return;
+    if (!mounted || isMobile) return;
     if (!wrapperRef.current || !containerRef.current) return;
 
-    const cardEls = gsap.utils.toArray<HTMLElement>(".service-card", containerRef.current);
+    const cardEls = gsap.utils.toArray<HTMLElement>(".service-card-desktop", containerRef.current);
 
     const tween = gsap.to(cardEls, {
       xPercent: -100 * (cardEls.length - 1),
@@ -344,14 +489,8 @@ export default function Solutions() {
         trigger: wrapperRef.current,
         pin: true,
         scrub: 1,
-        // Object snap form gives smooth snap animation on mobile; desktop keeps same snap points
-        snap: isMobile
-          ? { snapTo: 1 / (cardEls.length - 1), duration: { min: 0.2, max: 0.3 }, ease: "power1.inOut" }
-          : 1 / (cardEls.length - 1),
-        end: () =>
-          "+=" + (isMobile
-            ? window.innerWidth * 0.85 * (cardEls.length - 1)
-            : wrapperRef.current!.offsetWidth),
+        snap: 1 / (cardEls.length - 1),
+        end: () => "+=" + wrapperRef.current!.offsetWidth,
         onUpdate: (self) => {
           const idx = Math.min(
             Math.floor(self.progress * cardEls.length),
@@ -362,61 +501,120 @@ export default function Solutions() {
       },
     });
 
-    // Ensure ScrollTrigger updates from native scroll events (touch device fallback)
-    const onScroll = () => ScrollTrigger.update();
-    window.addEventListener("scroll", onScroll, { passive: true });
-
     return () => {
       tween.scrollTrigger?.kill();
       tween.kill();
-      window.removeEventListener("scroll", onScroll);
     };
+  }, [mounted, isMobile]);
+
+  // Mobile only: track active card from scroll position
+  useEffect(() => {
+    if (!mounted || !isMobile) return;
+    const el = carouselRef.current;
+    if (!el) return;
+
+    const onScroll = () => {
+      // card width = 85vw, gap = 16px
+      const cardSlot = window.innerWidth * 0.85 + 16;
+      const idx = Math.round(el.scrollLeft / cardSlot);
+      setActiveCard(Math.max(0, Math.min(idx, cards.length - 1)));
+    };
+
+    el.addEventListener("scroll", onScroll, { passive: true });
+    return () => el.removeEventListener("scroll", onScroll);
   }, [mounted, isMobile]);
 
   if (!mounted) return null;
 
+  // Desktop dot colors adapt to dark/light card
   const isDarkCard = activeCard % 2 === 0;
   const dotActive = isDarkCard ? "rgba(255,255,255,0.8)" : "#1A1A1A";
   const dotInactive = isDarkCard ? "rgba(255,255,255,0.2)" : "rgba(26,26,26,0.2)";
 
+  // ── Mobile layout ───────────────────────────────────────────────────────────
+  if (isMobile) {
+    return (
+      <section id="solutions" className="light-section" style={{ backgroundColor: "#F5F4EF" }}>
+        <SectionHeader />
+
+        {/* Native scroll-snap carousel */}
+        <div
+          ref={carouselRef}
+          className="solutions-carousel"
+          style={{
+            display: "flex",
+            overflowX: "scroll",
+            scrollSnapType: "x mandatory",
+            // eslint-disable-next-line @typescript-eslint/no-explicit-any
+            WebkitOverflowScrolling: "touch" as any,
+            gap: "16px",
+            padding: "0 16px 32px",
+            position: "relative",
+            zIndex: 1,
+          }}
+        >
+          {cards.map((card, i) => (
+            <div
+              key={i}
+              style={{
+                width: "85vw",
+                flexShrink: 0,
+                scrollSnapAlign: "start",
+              }}
+            >
+              <ServiceCard card={card} index={i} />
+            </div>
+          ))}
+        </div>
+
+        {/* Pagination dots */}
+        <div
+          style={{
+            display: "flex",
+            justifyContent: "center",
+            gap: "8px",
+            paddingBottom: "40px",
+          }}
+        >
+          {cards.map((_, i) => (
+            <div
+              key={i}
+              style={{
+                width: "8px",
+                height: "8px",
+                borderRadius: "50%",
+                background: i === activeCard ? "#5F8575" : "rgba(26,26,26,0.2)",
+                transition: "background 0.3s ease",
+              }}
+            />
+          ))}
+        </div>
+
+        <PricingBlock />
+
+        <style>{`
+          .solutions-carousel { scrollbar-width: none; }
+          .solutions-carousel::-webkit-scrollbar { display: none; }
+          @media (max-width: 768px) {
+            .card-cols { grid-template-columns: 1fr !important; }
+            .service-card-inner { padding: 40px 24px !important; }
+          }
+        `}</style>
+      </section>
+    );
+  }
+
+  // ── Desktop layout (GSAP pin — untouched) ──────────────────────────────────
   return (
     <section id="solutions" className="light-section" style={{ backgroundColor: "#F5F4EF", overflowX: "hidden" }}>
-      {/* Section header */}
-      <div style={{ padding: "120px 0 60px", borderTop: "1px solid var(--border)", position: "relative", zIndex: 1 }}>
-        <div className="container">
-          <FadeIn>
-            <h2
-              style={{
-                fontFamily: "var(--font-instrument), serif",
-                fontSize: "clamp(32px, 4.5vw, 56px)",
-                color: "var(--text-primary)",
-                lineHeight: 1.1,
-                letterSpacing: "-0.02em",
-                marginBottom: "16px",
-              }}
-            >
-              Three Ways We Work Together
-            </h2>
-            <p
-              style={{
-                fontFamily: "var(--font-body), serif",
-                fontSize: "19px",
-                color: "var(--text-secondary)",
-              }}
-            >
-              Starting wherever you are. Staying as long as it matters.
-            </p>
-          </FadeIn>
-        </div>
-      </div>
+      <SectionHeader />
 
-      {/* Horizontal scroll — all screens */}
       <div
         ref={wrapperRef}
         data-cursor="drag"
         style={{ width: "100%", overflow: "hidden", position: "relative", zIndex: 1 }}
       >
-        {/* Progress dots */}
+        {/* Progress dashes */}
         <div
           style={{
             position: "absolute",
@@ -442,21 +640,13 @@ export default function Solutions() {
 
         <div
           ref={containerRef}
-          style={{
-            display: "flex",
-            // Mobile: 85vw per card so next card peeks; desktop: each card fills viewport
-            width: isMobile ? `${cards.length * 85}vw` : "300%",
-          }}
+          style={{ display: "flex", width: "300%" }}
         >
           {cards.map((card, i) => (
             <div
               key={i}
-              className="service-card"
-              style={{
-                width: isMobile ? "85vw" : "33.333%",
-                flexShrink: 0,
-                height: "100vh",
-              }}
+              className="service-card-desktop"
+              style={{ width: "33.333%", flexShrink: 0, height: "100vh" }}
             >
               <ServiceCard card={card} index={i} fullHeight />
             </div>
@@ -464,107 +654,7 @@ export default function Solutions() {
         </div>
       </div>
 
-      {/* Pricing */}
-      <div style={{ padding: "80px 0", borderTop: "1px solid var(--border)", backgroundColor: "#F5F4EF", position: "relative", zIndex: 1 }}>
-        <div className="container">
-          <FadeIn>
-            <div style={{ textAlign: "center" }}>
-              {/* Typographic menu */}
-              <div style={{ maxWidth: "800px", margin: "0 auto" }}>
-                {[
-                  ["AI Readiness Assessment", "$500 flat"],
-                  ["Systems Implementation", "Scoped per engagement"],
-                  ["Fractional Chief AI Officer", "From $1,500/month"],
-                ].map(([service, price], i) => (
-                  <div
-                    key={service}
-                    style={{
-                      display: "flex",
-                      justifyContent: "space-between",
-                      alignItems: "baseline",
-                      padding: "28px 0",
-                      borderBottom: i < 2 ? "1px solid var(--border)" : "none",
-                    }}
-                  >
-                    <span
-                      style={{
-                        fontFamily: "var(--font-instrument), serif",
-                        fontSize: "24px",
-                        color: "var(--text-primary)",
-                        textAlign: "left",
-                      }}
-                    >
-                      {service}
-                    </span>
-                    <span
-                      style={{
-                        fontFamily: "var(--font-mono), monospace",
-                        fontSize: "18px",
-                        color: "var(--text-secondary)",
-                        textAlign: "right",
-                        flexShrink: 0,
-                        marginLeft: "24px",
-                      }}
-                    >
-                      {price}
-                    </span>
-                  </div>
-                ))}
-              </div>
-
-              <p
-                style={{
-                  fontFamily: "var(--font-instrument), serif",
-                  fontStyle: "italic",
-                  fontSize: "18px",
-                  color: "var(--text-muted)",
-                  marginTop: "40px",
-                  marginBottom: "40px",
-                }}
-              >
-                Every engagement starts with a conversation — not a proposal.
-              </p>
-              <MagneticButton>
-                <motion.a
-                  href="#contact"
-                  onClick={(e) => {
-                    e.preventDefault();
-                    document.querySelector("#contact")?.scrollIntoView({ behavior: "smooth" });
-                  }}
-                  style={{
-                    display: "inline-flex",
-                    alignItems: "center",
-                    gap: "8px",
-                    background: "var(--eucalyptus)",
-                    color: "#FFFFFF",
-                    padding: "16px 32px",
-                    borderRadius: "4px",
-                    fontFamily: "var(--font-inter), sans-serif",
-                    fontSize: "15px",
-                    fontWeight: 500,
-                    textDecoration: "none",
-                    marginBottom: "16px",
-                  }}
-                  whileHover={{ background: "#4A7065" }}
-                >
-                  Book a Free Strategy Session →
-                </motion.a>
-              </MagneticButton>
-              <div style={{ marginTop: "16px" }}>
-                <span
-                  style={{
-                    fontFamily: "var(--font-inter), sans-serif",
-                    fontSize: "13px",
-                    color: "var(--text-muted)",
-                  }}
-                >
-                  Nashville-based. Founder-led. You talk to the same person who does the work.
-                </span>
-              </div>
-            </div>
-          </FadeIn>
-        </div>
-      </div>
+      <PricingBlock />
 
       <style>{`
         @media (max-width: 768px) {
