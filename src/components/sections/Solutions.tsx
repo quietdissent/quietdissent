@@ -15,19 +15,20 @@ const cards = [
     headline: "AI Readiness Assessment",
     subline: "$500 · The Starting Point",
     description:
-      "Before we touch a single tool, we learn your business. We map your workflows, identify your revenue leaks, and deliver a plain-language roadmap: here's where AI makes sense, here's where it doesn't, and here's the order to move in.\n\nThis is not a sales pitch dressed as a consultation. It's a real assessment with a real deliverable.",
+      "A diagnosis, not a sales pitch. A deliverable, not a deck.\n\nBefore we recommend a single tool, we learn your business. We visit your operation, map your workflows, quantify what your gaps are actually costing you, and deliver a written report you can act on — whether you hire us or not.\n\nThis is a real assessment with a real deliverable. You walk away with a clear picture of what's broken, what it's costing you, and exactly what to do about it.",
     whatYouGet: [
-      "A precise map of operational gaps and their cost",
-      "Prioritized recommendations ranked by ROI",
-      "A plain-language roadmap — no jargon",
-      "Clarity on what to build, buy, or ignore",
+      "Revenue Leak Audit — Your missed calls, lost leads, after-hours gaps, and unproductive tasks quantified in dollars. Not estimates — your actual numbers.",
+      "On-Site Workflow Discovery — We walk your operation in person. Phone triage, scheduling, handoffs, the unwritten rules no remote consultant would think to ask about.",
+      "Staff & Culture Readiness — Who gets affected? How has your team responded to past tech changes? We identify resistance before it becomes a problem.",
+      "Technical Environment Review — Your current software, phone system, CRM, and website. What connects easily, what needs workarounds, and any compliance flags.",
+      "Quick-Win Roadmap — Prioritized recommendations ranked by ROI. Phase 1, Phase 2, Phase 3 — laid out clearly so you know the order to move in.",
+      "ROI Projection — Conservative math: what you'll recover monthly, annually, and how long until the investment pays for itself.",
     ],
     howItRuns: [
-      "30-minute intake call to understand your operation",
-      "We audit your workflows, tools, and time allocation",
-      "Identify the highest-leverage gaps in your system",
-      "Deliver written findings with projected ROI per fix",
-      "Walk you through every finding — no open questions",
+      "30-minute intake call to understand your operation and confirm the assessment is the right fit.",
+      "On-site visit (1–2 hours) to walk your actual process — not a survey, not a Zoom call.",
+      "Written report delivered within 5 business days — plain language, no jargon, every finding backed by your numbers.",
+      "Findings walkthrough — we sit with you and explain every recommendation. No open questions.",
     ],
     cta: "Book Your Assessment →",
     ctaHref: "#contact",
@@ -35,43 +36,59 @@ const cards = [
   {
     label: "ENGAGEMENT 02",
     headline: "Systems Implementation",
-    subline: "From Roadmap to Working System",
+    subline: "Custom-Scoped Build + Monthly Retainer",
     description:
-      "We build the systems your assessment identified — AI voice agents, sales chatbots, CRM automation, inbox management, workflow integrations. Custom-configured around how your business actually operates, not how a template assumes it does. Most clients are live within two weeks of signing.",
+      "From roadmap to working system — and someone who stays accountable for it.\n\nWe build the systems your assessment identified — AI voice agents, sales chatbots, CRM automation, inbox management, workflow integrations. Custom-configured around how your business actually operates, not how a template assumes it does.\n\nThen we stay. Every implementation includes ongoing monitoring, performance reporting, and tuning. You get a build partner and an operations partner in one engagement.",
     whatYouGet: [
-      "Custom-built systems scoped to your specific gaps",
-      "Full configuration — your voice, rules, workflows",
+      { header: "THE BUILD" },
+      "Custom-built systems scoped to the specific gaps your assessment identified",
+      "Full configuration — your voice, your rules, your workflows",
       "Tested and approved before anything goes live",
-      "Weekly performance reports and ongoing tuning",
+      "Staff walkthrough so your team knows exactly how the system works",
+      { header: "THE RETAINER" },
+      "Monthly performance reports — calls handled, leads captured, appointments booked, issues resolved",
+      "Ongoing system tuning based on real usage data",
+      "Direct access — no tickets, no account managers, no runaround",
+      "Accountability for results — we stay because the system only works if someone's watching it",
     ],
     howItRuns: [
       "Assessment identifies which systems move the needle",
-      "We scope and price the build transparently",
+      "We scope and price the build transparently — 50% upfront, 50% at go-live",
       "Configuration and testing in week one",
-      "Launch, monitoring, and tuning in week two",
-      "You get reports — we stay accountable for results",
+      "Launch, monitoring, and staff training in week two",
+      "Monthly retainer begins — you get reports, we stay accountable for outcomes",
     ],
     cta: "Discuss a Build →",
     ctaHref: "#contact",
   },
   {
     label: "ENGAGEMENT 03",
-    headline: "Fractional Chief AI Officer",
-    subline: "Your Ongoing Strategic Partner",
+    headline: "Custom Builds & Fractional Chief AI Officer",
+    subline: "Project-Based + Strategic Retainer",
     description:
-      "This is where the real value compounds. As your Fractional Chief AI Officer, we monitor your systems, train your team, identify new opportunities as your business grows, and serve as the strategic advisor you call before making any technology decision.\n\nSenior-level AI leadership — without the cost of a full-time executive hire.",
+      "For businesses that have outgrown standard implementations.\n\nSome problems don't fit a standard playbook. You need a custom AI agent built from scratch, a complex multi-system workflow, or strategic AI leadership that extends beyond any single project. This is that tier.\n\nWhether it's a one-off custom build or an ongoing seat at your leadership table, this is senior-level AI guidance — without the cost of a full-time executive hire.",
     whatYouGet: [
-      "Ongoing strategic guidance on AI adoption",
-      "Monthly operational reviews and prioritization",
-      "Direct access — no tickets, no account managers",
-      "A partner who stays accountable for outcomes",
+      { header: "CUSTOM BUILDS" },
+      { intro: "When your needs go beyond off-the-shelf implementations, we build from scratch. Custom AI agents, complex multi-step workflows, proprietary automation logic — designed around your specific operation and integrated into your existing systems." },
+      "Custom AI agents built for use cases that don't have a template",
+      "Complex workflow automation — multi-system, multi-step, built to your logic",
+      "Proprietary integrations connecting tools that weren't designed to talk to each other",
+      "Scoped and priced per project — clear deliverables, clear timelines, no ambiguity",
+      { header: "FRACTIONAL CHIEF AI OFFICER" },
+      { intro: "This is the relationship that compounds. As your Fractional Chief AI Officer, I monitor your systems, identify new opportunities as your business grows, train your team, and serve as the strategic advisor you call before making any technology decision." },
+      "Ongoing strategic guidance on AI adoption across your entire operation",
+      "Monthly working sessions to review system performance and reprioritize",
+      "Quarterly roadmap updates as your business evolves and new tools emerge",
+      "Team training and change management — so your people actually use what we build",
+      "Direct access — no tickets, no account managers. You call, I answer.",
+      "Vendor and tool evaluation — I review before you buy, so you stop wasting money on tools that don't fit",
     ],
     howItRuns: [
-      "Start with an AI Readiness Assessment",
+      "Start with an AI Readiness Assessment (Engagement 01) or an existing implementation relationship",
       "Define strategic priorities for the next 90 days",
-      "Monthly working sessions to review progress",
-      "Ongoing availability for decisions and builds",
-      "Quarterly roadmap updates as the business evolves",
+      "Monthly working sessions to review progress, adjust priorities, and plan builds",
+      "Ongoing availability for decisions, builds, and the questions that come up between sessions",
+      "Quarterly roadmap refresh — because the plan that made sense in January may not make sense in April",
     ],
     cta: "Explore Advisory →",
     ctaHref: "#contact",
@@ -223,22 +240,56 @@ function ServiceCard({
               What You Get
             </div>
             <ul style={{ listStyle: "none", display: "flex", flexDirection: "column", gap: "10px" }}>
-              {card.whatYouGet.map((item, i) => (
-                <li
-                  key={i}
-                  style={{
-                    fontFamily: "var(--font-inter), sans-serif",
-                    fontSize: "14px",
-                    color: t.body,
-                    lineHeight: 1.4,
-                    display: "flex",
-                    gap: "8px",
-                  }}
-                >
-                  <span style={{ color: "#5F8575", flexShrink: 0 }}>—</span>
-                  <span>{item}</span>
-                </li>
-              ))}
+              {card.whatYouGet.map((item, i) => {
+                if (typeof item === "object" && "header" in item) {
+                  return (
+                    <li
+                      key={i}
+                      style={{
+                        fontFamily: "var(--font-mono), monospace",
+                        fontSize: "10px",
+                        textTransform: "uppercase",
+                        letterSpacing: "2px",
+                        color: t.sectionLabel,
+                        marginTop: i > 0 ? "12px" : 0,
+                      }}
+                    >
+                      {item.header}
+                    </li>
+                  );
+                }
+                if (typeof item === "object" && "intro" in item) {
+                  return (
+                    <li
+                      key={i}
+                      style={{
+                        fontFamily: "var(--font-inter), sans-serif",
+                        fontSize: "14px",
+                        color: t.body,
+                        lineHeight: 1.5,
+                      }}
+                    >
+                      {item.intro}
+                    </li>
+                  );
+                }
+                return (
+                  <li
+                    key={i}
+                    style={{
+                      fontFamily: "var(--font-inter), sans-serif",
+                      fontSize: "14px",
+                      color: t.body,
+                      lineHeight: 1.4,
+                      display: "flex",
+                      gap: "8px",
+                    }}
+                  >
+                    <span style={{ color: "#5F8575", flexShrink: 0 }}>—</span>
+                    <span>{item as string}</span>
+                  </li>
+                );
+              })}
             </ul>
           </div>
 
