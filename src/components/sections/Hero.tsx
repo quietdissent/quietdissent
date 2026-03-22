@@ -263,10 +263,7 @@ export default function Hero() {
                 href="#contact"
                 onClick={(e) => {
                   e.preventDefault();
-                  const target = document.querySelector("#contact");
-                  if (target) {
-                    window.scrollTo({ top: target.getBoundingClientRect().top + window.scrollY - 100, behavior: "smooth" });
-                  }
+                  // Scroll handled by global Lenis anchor listener in SmoothScroll
                 }}
                 style={{
                   display: "inline-flex",

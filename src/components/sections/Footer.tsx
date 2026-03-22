@@ -13,10 +13,7 @@ const navLinks = [
 export default function Footer() {
   const handleNav = (e: React.MouseEvent<HTMLAnchorElement>, href: string) => {
     e.preventDefault();
-    const target = document.querySelector(href);
-    if (target) {
-      window.scrollTo({ top: target.getBoundingClientRect().top + window.scrollY - 100, behavior: "smooth" });
-    }
+    // Scroll handled by global Lenis anchor listener in SmoothScroll
   };
 
   return (
