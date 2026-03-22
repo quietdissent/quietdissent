@@ -261,10 +261,6 @@ export default function Hero() {
             <MagneticButton>
               <motion.a
                 href="#contact"
-                onClick={(e) => {
-                  e.preventDefault();
-                  // Scroll handled by global Lenis anchor listener in SmoothScroll
-                }}
                 style={{
                   display: "inline-flex",
                   alignItems: "center",

@@ -11,11 +11,6 @@ const navLinks = [
 ];
 
 export default function Footer() {
-  const handleNav = (e: React.MouseEvent<HTMLAnchorElement>, href: string) => {
-    e.preventDefault();
-    // Scroll handled by global Lenis anchor listener in SmoothScroll
-  };
-
   return (
     <motion.footer
       initial={{ opacity: 0 }}
@@ -71,7 +66,6 @@ export default function Footer() {
               <a
                 key={link.label}
                 href={link.href}
-                onClick={(e) => handleNav(e, link.href)}
                 style={{
                   fontFamily: "var(--font-mono), monospace",
                   fontSize: "10px",

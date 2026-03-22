@@ -1,7 +1,6 @@
 import type { Metadata } from "next";
 import { Instrument_Serif, Inter, JetBrains_Mono, Crimson_Pro } from "next/font/google";
 import "./globals.css";
-import SmoothScroll from "@/components/SmoothScroll";
 import SplashCursor from "@/components/animations/SplashCursor";
 import LiquidEther from "@/components/animations/LiquidEther";
 
@@ -72,11 +71,9 @@ export default function RootLayout({
         >
           Skip to main content
         </a>
-        <SmoothScroll>
-          <SplashCursor />
-          <LiquidEther />
-          {children}
-        </SmoothScroll>
+        <SplashCursor />
+        <LiquidEther />
+        {children}
       </body>
     </html>
   );

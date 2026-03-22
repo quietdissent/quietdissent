@@ -47,9 +47,8 @@ export default function Navigation() {
   }, []);
 
   const handleNavClick = (e: React.MouseEvent<HTMLAnchorElement>, href: string) => {
-    e.preventDefault();
+    void href;
     setMenuOpen(false);
-    // Scroll is handled by the global Lenis anchor listener in SmoothScroll
   };
 
   // Colors based on mode
