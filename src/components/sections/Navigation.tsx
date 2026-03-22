@@ -46,8 +46,7 @@ export default function Navigation() {
     return () => observer.disconnect();
   }, []);
 
-  const handleNavClick = (e: React.MouseEvent<HTMLAnchorElement>, href: string) => {
-    void href;
+  const handleNavClick = (_e: React.MouseEvent<HTMLAnchorElement>, _href: string) => {
     setMenuOpen(false);
   };
 

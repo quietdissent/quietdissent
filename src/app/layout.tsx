@@ -3,6 +3,7 @@ import { Instrument_Serif, Inter, JetBrains_Mono, Crimson_Pro } from "next/font/
 import "./globals.css";
 import SplashCursor from "@/components/animations/SplashCursor";
 import LiquidEther from "@/components/animations/LiquidEther";
+import AnchorScroll from "@/components/AnchorScroll";
 
 const instrumentSerif = Instrument_Serif({
   variable: "--font-instrument",
@@ -71,6 +72,7 @@ export default function RootLayout({
         >
           Skip to main content
         </a>
+        <AnchorScroll />
         <SplashCursor />
         <LiquidEther />
         {children}
