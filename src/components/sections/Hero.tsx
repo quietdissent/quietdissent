@@ -263,7 +263,10 @@ export default function Hero() {
                 href="#contact"
                 onClick={(e) => {
                   e.preventDefault();
-                  document.querySelector("#contact")?.scrollIntoView({ behavior: "smooth" });
+                  const target = document.querySelector("#contact");
+                  if (target) {
+                    window.scrollTo({ top: target.getBoundingClientRect().top + window.scrollY - 100, behavior: "smooth" });
+                  }
                 }}
                 style={{
                   display: "inline-flex",

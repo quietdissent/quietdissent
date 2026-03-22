@@ -13,7 +13,10 @@ const navLinks = [
 export default function Footer() {
   const handleNav = (e: React.MouseEvent<HTMLAnchorElement>, href: string) => {
     e.preventDefault();
-    document.querySelector(href)?.scrollIntoView({ behavior: "smooth" });
+    const target = document.querySelector(href);
+    if (target) {
+      window.scrollTo({ top: target.getBoundingClientRect().top + window.scrollY - 100, behavior: "smooth" });
+    }
   };
 
   return (

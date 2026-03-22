@@ -49,7 +49,10 @@ export default function Navigation() {
   const handleNavClick = (e: React.MouseEvent<HTMLAnchorElement>, href: string) => {
     e.preventDefault();
     setMenuOpen(false);
-    document.querySelector(href)?.scrollIntoView({ behavior: "smooth" });
+    const target = document.querySelector(href);
+    if (target) {
+      window.scrollTo({ top: target.getBoundingClientRect().top + window.scrollY - 100, behavior: "smooth" });
+    }
   };
 
   // Colors based on mode
