@@ -95,11 +95,14 @@ const labelStyle: React.CSSProperties = {
 
 export default function Contact() {
   const [submitted, setSubmitted] = useState(false);
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState<string | null>(null);
   const sectionRef = useRef<HTMLElement>(null);
   const bgRef = useRef<HTMLDivElement>(null);
 
   const [form, setForm] = useState({
     name: "",
+    email: "",
     business: "",
     industry: "",
     headache: "",
@@ -112,11 +115,35 @@ export default function Contact() {
     e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>
   ) => {
     setForm((prev) => ({ ...prev, [e.target.name]: e.target.value }));
+    if (error) setError(null);
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    setSubmitted(true);
+    setLoading(true);
+    setError(null);
+
+    try {
+      const res = await fetch("/api/contact", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(form),
+      });
+
+      const data = await res.json();
+
+      if (!res.ok) {
+        throw new Error(data.error ?? "Something went wrong.");
+      }
+
+      setSubmitted(true);
+    } catch (err) {
+      setError(
+        err instanceof Error ? err.message : "Something went wrong."
+      );
+    } finally {
+      setLoading(false);
+    }
   };
 
   useEffect(() => {
@@ -205,7 +232,7 @@ export default function Contact() {
                       marginBottom: "16px",
                     }}
                   >
-                    We&apos;ll be in touch.
+                    Message sent.
                   </div>
                   <p
                     style={{
@@ -215,7 +242,8 @@ export default function Contact() {
                       lineHeight: 1.65,
                     }}
                   >
-                    Your inquiry has been received. Expect a personal response within 48 hours.
+                    I&apos;ll be in touch within 1–2 business days. Check your inbox — a
+                    confirmation is on its way.
                   </p>
                 </motion.div>
               ) : (
@@ -227,7 +255,7 @@ export default function Contact() {
                   exit={{ opacity: 0 }}
                   style={{ display: "flex", flexDirection: "column", gap: "24px", marginBottom: "40px" }}
                 >
-                  {/* Row 1: Name + Business */}
+                  {/* Row 1: Name + Email */}
                   <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "20px" }} className="form-row">
                     <div>
                       <label style={labelStyle}>Full Name *</label>
@@ -243,11 +271,11 @@ export default function Contact() {
                       />
                     </div>
                     <div>
-                      <label style={labelStyle}>Business Name *</label>
+                      <label style={labelStyle}>Email Address *</label>
                       <input
-                        type="text"
-                        name="business"
-                        value={form.business}
+                        type="email"
+                        name="email"
+                        value={form.email}
                         onChange={handleChange}
                         required
                         style={inputStyle}
@@ -255,6 +283,21 @@ export default function Contact() {
                         onBlur={(e) => (e.currentTarget.style.borderColor = "var(--border)")}
                       />
                     </div>
+                  </div>
+
+                  {/* Business */}
+                  <div>
+                    <label style={labelStyle}>Business Name *</label>
+                    <input
+                      type="text"
+                      name="business"
+                      value={form.business}
+                      onChange={handleChange}
+                      required
+                      style={inputStyle}
+                      onFocus={(e) => (e.currentTarget.style.borderColor = "var(--eucalyptus)")}
+                      onBlur={(e) => (e.currentTarget.style.borderColor = "var(--border)")}
+                    />
                   </div>
 
                   {/* Industry */}
@@ -346,16 +389,44 @@ export default function Contact() {
                     />
                   </div>
 
+                  {/* Error message */}
+                  {error && (
+                    <motion.div
+                      initial={{ opacity: 0, y: -8 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      style={{
+                        padding: "14px 18px",
+                        background: "rgba(180,60,60,0.07)",
+                        border: "1px solid rgba(180,60,60,0.25)",
+                        borderRadius: "4px",
+                        fontFamily: "var(--font-inter), sans-serif",
+                        fontSize: "14px",
+                        color: "#C05050",
+                        lineHeight: 1.6,
+                      }}
+                    >
+                      {error} You can also reach me directly at{" "}
+                      <a
+                        href={`mailto:${EMAIL}`}
+                        style={{ color: "var(--eucalyptus)", textDecoration: "none", borderBottom: "1px solid rgba(95,133,117,0.3)" }}
+                      >
+                        {EMAIL}
+                      </a>
+                      .
+                    </motion.div>
+                  )}
+
                   {/* Submit */}
                   <div>
                     <MagneticButton>
                       <motion.button
                         type="submit"
+                        disabled={loading}
                         style={{
                           display: "inline-flex",
                           alignItems: "center",
                           gap: "8px",
-                          background: "#5F8575",
+                          background: loading ? "#4A6B5F" : "#5F8575",
                           color: "#FFFFFF",
                           padding: "18px 36px",
                           borderRadius: "4px",
@@ -364,12 +435,14 @@ export default function Contact() {
                           fontWeight: 500,
                           letterSpacing: "-0.01em",
                           border: "none",
-                          cursor: "pointer",
+                          cursor: loading ? "not-allowed" : "pointer",
+                          opacity: loading ? 0.75 : 1,
+                          transition: "opacity 0.2s ease, background 0.2s ease",
                         }}
-                        whileHover={{ background: "#4A6B5F" }}
+                        whileHover={loading ? {} : { background: "#4A6B5F" }}
                         transition={{ duration: 0.3 }}
                       >
-                        Send Your Inquiry →
+                        {loading ? "Sending…" : "Send Your Inquiry →"}
                       </motion.button>
                     </MagneticButton>
                   </div>
