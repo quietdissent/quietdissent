@@ -28,6 +28,7 @@ export default function Home() {
           }}
         />
         <Problem />
+        <Newsletter />
         <HowAIWorks />
         <Solutions />
         <HowItWorks />
@@ -37,7 +38,6 @@ export default function Home() {
         <FAQ />
         <Contact />
         <About />
-        <Newsletter />
       </main>
       <Footer />
     </>

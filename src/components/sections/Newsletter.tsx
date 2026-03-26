@@ -112,7 +112,7 @@ export default function Newsletter() {
                     color: "#8daba1",
                   }}
                 >
-                  Free Newsletter
+                  Signal, Not Noise
                 </span>
               </div>
 
@@ -318,7 +318,7 @@ export default function Newsletter() {
                       }}
                       whileHover={status === "loading" ? {} : { background: "#7a9991" }}
                     >
-                      {status === "loading" ? "Subscribing…" : "Send me The Dissenter →"}
+                      {status === "loading" ? "Subscribing…" : "Join The Dissenter →"}
                     </motion.button>
 
                     {/* Error */}

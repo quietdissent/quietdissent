@@ -106,7 +106,7 @@ export default function Footer() {
               color: "var(--text-muted)",
             }}
           >
-            © 2026 Quiet Dissent. All rights reserved.
+            © 2024 Quiet Dissent. All rights reserved.
           </span>
           <div style={{ display: "flex", gap: "24px", flexWrap: "wrap", alignItems: "center" }}>
             <a
