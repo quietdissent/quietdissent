@@ -19,12 +19,11 @@ export default function Home() {
       <Navigation />
       <main id="main">
         <Hero />
-        <Newsletter />
-        {/* Breathing dissolve: dark newsletter → warm off-white */}
+        {/* Breathing dissolve: dark hero → warm off-white */}
         <div
           style={{
             height: "120px",
-            background: "linear-gradient(to bottom, #161616 0%, #F5F4EF 100%)",
+            background: "linear-gradient(to bottom, #111111 0%, #F5F4EF 100%)",
             marginBottom: "-1px",
           }}
         />
@@ -38,6 +37,7 @@ export default function Home() {
         <FAQ />
         <Contact />
         <About />
+        <Newsletter />
       </main>
       <Footer />
     </>
