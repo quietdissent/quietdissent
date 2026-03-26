@@ -34,10 +34,9 @@ export default function Home() {
         <Comparison />
         <Results />
         <Promises />
-        {/* Newsletter lands here — after the full narrative, before the FAQ resting point */}
-        <Newsletter />
         <FAQ />
         <Contact />
+        <Newsletter />
         <About />
       </main>
       <Footer />
