@@ -3,7 +3,6 @@
 import { useEffect, useRef, useState } from "react";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
-import FadeIn from "@/components/animations/FadeIn";
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -30,227 +29,158 @@ const promises = [
   },
 ];
 
-// ─── Mobile: original stacked layout ──────────────────────────────────────────
-
-function MobileLayout() {
-  return (
-    <section
-      id="promises"
-      className="section-padding light-section"
-      style={{
-        borderTop: "1px solid var(--border)",
-        backgroundColor: "#F5F4EF",
-        overflow: "hidden",
-      }}
-    >
-      <div className="container" style={{ position: "relative", zIndex: 1 }}>
-        <FadeIn>
-          <h2
-            style={{
-              fontFamily: "var(--font-instrument), serif",
-              fontSize: "clamp(32px, 4.5vw, 56px)",
-              color: "var(--text-primary)",
-              lineHeight: 1.1,
-              letterSpacing: "-0.02em",
-              marginBottom: "64px",
-            }}
-          >
-            What We&apos;re Committed To — Every Time.
-          </h2>
-        </FadeIn>
-
-        <div style={{ display: "flex", flexDirection: "column" }}>
-          {promises.map((promise, i) => (
-            <FadeIn key={i} delay={i * 0.08} y={30}>
-              <div
-                style={{
-                  display: "flex",
-                  gap: "40px",
-                  alignItems: "flex-start",
-                  padding: "32px 0",
-                  borderBottom: i < promises.length - 1 ? "1px solid var(--border)" : "none",
-                }}
-              >
-                <span
-                  style={{
-                    fontFamily: "var(--font-mono), monospace",
-                    fontSize: "clamp(20px, 2vw, 28px)",
-                    color: "var(--eucalyptus)",
-                    lineHeight: 1,
-                    flexShrink: 0,
-                    minWidth: "36px",
-                    paddingTop: "4px",
-                  }}
-                >
-                  {promise.number}
-                </span>
-                <p
-                  data-cursor="text"
-                  style={{
-                    fontFamily: "var(--font-instrument), serif",
-                    fontSize: "clamp(20px, 2.5vw, 28px)",
-                    color: "var(--text-primary)",
-                    lineHeight: 1.4,
-                  }}
-                >
-                  {promise.text}
-                </p>
-              </div>
-            </FadeIn>
-          ))}
-        </div>
-      </div>
-    </section>
-  );
-}
-
-// ─── Desktop: sticky scroll stack ─────────────────────────────────────────────
+// ─── Desktop: sticky pinned section, promises reveal one at a time ────────────
+// Left side stays fixed showing the heading.
+// Right side scrolls through each promise as a large type moment.
 
 function DesktopLayout() {
   const outerRef = useRef<HTMLDivElement>(null);
-  const cardRefs = useRef<(HTMLDivElement | null)[]>([]);
-  const zoneRefs = useRef<(HTMLDivElement | null)[]>([]);
+  const [activeIndex, setActiveIndex] = useState(0);
 
   useEffect(() => {
     if (typeof window === "undefined") return;
     const outer = outerRef.current;
     if (!outer) return;
 
-    // All cards start below viewport
-    cardRefs.current.forEach((card) => {
-      if (card) gsap.set(card, { y: "100vh" });
+    const st = ScrollTrigger.create({
+      trigger: outer,
+      start: "top top",
+      end: `+=${promises.length * window.innerHeight * 0.8}`,
+      pin: true,
+      scrub: 0.4,
+      onUpdate: (self) => {
+        const idx = Math.min(
+          Math.floor(self.progress * promises.length),
+          promises.length - 1
+        );
+        setActiveIndex(idx);
+      },
     });
 
-    // Trigger zones — one per promise
-    const triggers = zoneRefs.current.map((zone, i) => {
-      if (!zone) return null;
-      return ScrollTrigger.create({
-        trigger: zone,
-        start: "top center",
-        once: false,
-        onEnter: () => {
-          const card = cardRefs.current[i];
-          if (card) gsap.to(card, { y: 0, duration: 0.5, ease: "power2.out" });
-        },
-        onLeaveBack: () => {
-          const card = cardRefs.current[i];
-          if (card) gsap.to(card, { y: "100vh", duration: 0.4, ease: "power2.in" });
-        },
-      });
-    });
-
-    return () => {
-      triggers.forEach((t) => t?.kill());
-    };
+    return () => st.kill();
   }, []);
 
   return (
     <section
       id="promises"
-      className="light-section"
       style={{
         borderTop: "1px solid var(--border)",
         backgroundColor: "#F5F4EF",
-        position: "relative",
       }}
     >
-      {/* Section heading — above the sticky scroll area */}
-      <div style={{ padding: "80px 0 60px", position: "relative", zIndex: 1 }}>
-        <div className="container">
-          <FadeIn>
-            <h2
-              style={{
-                fontFamily: "var(--font-instrument), serif",
-                fontSize: "clamp(32px, 4.5vw, 56px)",
-                color: "var(--text-primary)",
-                lineHeight: 1.1,
-                letterSpacing: "-0.02em",
-              }}
-            >
-              What We&apos;re Committed To — Every Time.
-            </h2>
-          </FadeIn>
-        </div>
-      </div>
-
-      {/* 5 × 80vh scroll container */}
       <div
         ref={outerRef}
-        style={{ position: "relative", height: "calc(5 * 80vh)" }}
+        style={{
+          height: "100vh",
+          display: "grid",
+          gridTemplateColumns: "1fr 1fr",
+          overflow: "hidden",
+        }}
       >
-        {/* Trigger zones — one per card, stacked vertically */}
-        {promises.map((_, i) => (
-          <div
-            key={i}
-            ref={(el) => { zoneRefs.current[i] = el; }}
-            style={{
-              position: "absolute",
-              top: `${i * 20}%`,
-              height: "20%",
-              width: "100%",
-              pointerEvents: "none",
-            }}
-          />
-        ))}
-
-        {/* Sticky container */}
+        {/* Left — stays fixed, shows heading and progress */}
         <div
           style={{
-            position: "sticky",
-            top: 0,
-            height: "100vh",
+            padding: "80px 60px 80px 0",
+            paddingLeft: "max(24px, calc((100vw - 1200px) / 2 + 24px))",
+            display: "flex",
+            flexDirection: "column",
+            justifyContent: "center",
+            borderRight: "1px solid var(--border)",
+          }}
+        >
+          <div
+            style={{
+              fontFamily: "var(--font-mono), monospace",
+              fontSize: "11px",
+              textTransform: "uppercase",
+              letterSpacing: "0.2em",
+              color: "#5F8575",
+              marginBottom: "32px",
+            }}
+          >
+            Our Commitments
+          </div>
+          <h2
+            style={{
+              fontFamily: "var(--font-instrument), serif",
+              fontSize: "clamp(28px, 3vw, 44px)",
+              color: "var(--text-primary)",
+              lineHeight: 1.15,
+              letterSpacing: "-0.02em",
+              marginBottom: "48px",
+            }}
+          >
+            What We&apos;re Committed To —<br />Every Time.
+          </h2>
+
+          {/* Progress dots */}
+          <div style={{ display: "flex", flexDirection: "column", gap: "10px" }}>
+            {promises.map((p, i) => (
+              <div
+                key={i}
+                style={{
+                  display: "flex",
+                  alignItems: "center",
+                  gap: "12px",
+                  opacity: i === activeIndex ? 1 : 0.3,
+                  transition: "opacity 0.3s ease",
+                }}
+              >
+                <div
+                  style={{
+                    width: "24px",
+                    height: "1px",
+                    background: i === activeIndex ? "#5F8575" : "var(--border)",
+                    transition: "background 0.3s",
+                  }}
+                />
+                <span
+                  style={{
+                    fontFamily: "var(--font-mono), monospace",
+                    fontSize: "11px",
+                    color: i === activeIndex ? "#5F8575" : "var(--text-muted)",
+                    transition: "color 0.3s",
+                  }}
+                >
+                  {p.number}
+                </span>
+              </div>
+            ))}
+          </div>
+        </div>
+
+        {/* Right — large type promise, fades between them */}
+        <div
+          style={{
+            display: "flex",
+            alignItems: "center",
+            padding: "80px 60px",
+            paddingRight: "max(24px, calc((100vw - 1200px) / 2 + 24px))",
             overflow: "hidden",
           }}
         >
-          {promises.map((promise, i) => (
+          {promises.map((p, i) => (
             <div
               key={i}
-              ref={(el) => { cardRefs.current[i] = el; }}
               style={{
                 position: "absolute",
-                inset: 0,
-                background: "#F5F4EF",
-                boxShadow: "0 -4px 24px rgba(0,0,0,0.06)",
-                display: "flex",
-                alignItems: "center",
-                justifyContent: "center",
-                zIndex: i + 1,
+                opacity: i === activeIndex ? 1 : 0,
+                transform: i === activeIndex ? "translateY(0)" : i < activeIndex ? "translateY(-40px)" : "translateY(40px)",
+                transition: "opacity 0.5s ease, transform 0.5s ease",
+                maxWidth: "560px",
               }}
             >
-              {/* Ghost number — top right */}
               <div
                 style={{
-                  position: "absolute",
-                  top: "48px",
-                  right: "64px",
-                  fontFamily: "var(--font-mono), monospace",
-                  fontSize: "80px",
-                  color: "var(--text-primary)",
-                  opacity: 0.06,
-                  lineHeight: 1,
-                  pointerEvents: "none",
-                  userSelect: "none",
-                }}
-              >
-                {promise.number}
-              </div>
-
-              {/* Promise text — centered */}
-              <p
-                data-cursor="text"
-                style={{
                   fontFamily: "var(--font-instrument), serif",
-                  fontSize: "clamp(24px, 3vw, 36px)",
+                  fontSize: "clamp(28px, 3.5vw, 48px)",
+                  lineHeight: 1.2,
+                  letterSpacing: "-0.02em",
                   color: "var(--text-primary)",
-                  lineHeight: 1.4,
-                  textAlign: "center",
-                  maxWidth: "640px",
-                  margin: "0 auto",
-                  padding: "0 40px",
                 }}
               >
-                {promise.text}
-              </p>
+                {p.text}
+              </div>
             </div>
           ))}
         </div>
@@ -259,7 +189,103 @@ function DesktopLayout() {
   );
 }
 
-// ─── Router ────────────────────────────────────────────────────────────────────
+// ─── Mobile: clean stacked list ───────────────────────────────────────────────
+
+function MobileLayout() {
+  useEffect(() => {
+    if (typeof window === "undefined") return;
+    gsap.fromTo(
+      ".promise-item",
+      { y: 30, opacity: 0 },
+      {
+        y: 0,
+        opacity: 1,
+        stagger: 0.1,
+        duration: 0.7,
+        ease: "power2.out",
+        scrollTrigger: { trigger: ".promise-item", start: "top 80%", once: true },
+      }
+    );
+  }, []);
+
+  return (
+    <section
+      id="promises"
+      style={{
+        borderTop: "1px solid var(--border)",
+        backgroundColor: "#F5F4EF",
+        padding: "80px 0",
+      }}
+    >
+      <div className="container">
+        <div
+          style={{
+            fontFamily: "var(--font-mono), monospace",
+            fontSize: "11px",
+            textTransform: "uppercase",
+            letterSpacing: "0.2em",
+            color: "#5F8575",
+            marginBottom: "16px",
+          }}
+        >
+          Our Commitments
+        </div>
+        <h2
+          style={{
+            fontFamily: "var(--font-instrument), serif",
+            fontSize: "clamp(28px, 6vw, 40px)",
+            color: "var(--text-primary)",
+            lineHeight: 1.1,
+            letterSpacing: "-0.02em",
+            marginBottom: "48px",
+          }}
+        >
+          What We&apos;re Committed To — Every Time.
+        </h2>
+
+        <ul style={{ listStyle: "none", display: "flex", flexDirection: "column", gap: "0" }}>
+          {promises.map((p, i) => (
+            <li
+              key={i}
+              className="promise-item"
+              style={{
+                display: "grid",
+                gridTemplateColumns: "40px 1fr",
+                gap: "16px",
+                padding: "28px 0",
+                borderBottom: i < promises.length - 1 ? "1px solid var(--border)" : "none",
+                alignItems: "start",
+              }}
+            >
+              <span
+                style={{
+                  fontFamily: "var(--font-mono), monospace",
+                  fontSize: "12px",
+                  color: "#5F8575",
+                  paddingTop: "3px",
+                }}
+              >
+                {p.number}
+              </span>
+              <p
+                style={{
+                  fontFamily: "var(--font-body), serif",
+                  fontSize: "18px",
+                  lineHeight: 1.55,
+                  color: "var(--text-primary)",
+                }}
+              >
+                {p.text}
+              </p>
+            </li>
+          ))}
+        </ul>
+      </div>
+    </section>
+  );
+}
+
+// ─── Router ───────────────────────────────────────────────────────────────────
 
 export default function Promises() {
   const [isMobile, setIsMobile] = useState(false);
@@ -274,6 +300,5 @@ export default function Promises() {
   }, []);
 
   if (!mounted) return null;
-  if (isMobile) return <MobileLayout />;
-  return <DesktopLayout />;
+  return isMobile ? <MobileLayout /> : <DesktopLayout />;
 }
