@@ -6,8 +6,8 @@ import * as THREE from "three";
 // ─── Tuning constants ─────────────────────────────────────────────────────────
 const NODE_COUNT = 60;           // was 120 — fewer = cleaner
 const CONNECTION_DISTANCE = 185; // was 120 — longer, more organic strings
-const NODE_OPACITY = 0.55;
-const LINE_OPACITY = 0.14;       // was 0.3 — much subtler
+const NODE_OPACITY = 0.6;
+const LINE_OPACITY = 0.35;       // was 0.3 — much subtler
 const NODE_SIZE = 2.0;
 const DRIFT_SPEED = 0.2;         // was 0.3 — slower, more meditative
 const MOUSE_RADIUS = 140;
@@ -203,7 +203,7 @@ export default function NodeNetwork({ scrollOpacity = 1 }: NodeNetworkProps) {
           const d = Math.sqrt(dx * dx + dy * dy + dz * dz);
 
           if (d < CONNECTION_DISTANCE) {
-            const alpha = (1 - d / CONNECTION_DISTANCE) * LINE_OPACITY;
+            const alpha = 1 - d / CONNECTION_DISTANCE;
             color.setRGB(0.373, 0.522, 0.459); // #5F8575
 
             const idx = lineCount * 6;
