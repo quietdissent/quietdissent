@@ -1,6 +1,7 @@
 "use client";
 
 import FadeIn from "@/components/animations/FadeIn";
+import ThreadLine from "@/components/animations/ThreadLine";
 
 const rows = [
   {
@@ -44,8 +45,12 @@ export default function Comparison() {
         borderTop: "1px solid var(--border)",
         backgroundColor: "#F5F4EF",
         overflow: "hidden",
+        position: "relative",
       }}
     >
+      {/* Animated thread — carries the visual line from HowItWorks */}
+      <ThreadLine />
+
       <div className="container" style={{ position: "relative", zIndex: 1 }}>
         <FadeIn>
           <h2
@@ -87,166 +92,151 @@ export default function Comparison() {
           </p>
         </FadeIn>
 
-        {/* Comparison table */}
         <FadeIn delay={0.15} y={40}>
           <div style={{ position: "relative" }}>
             <div
-              // eslint-disable-next-line @typescript-eslint/no-explicit-any
               style={{
                 overflowX: "auto",
+                // eslint-disable-next-line @typescript-eslint/no-explicit-any
                 WebkitOverflowScrolling: "touch",
               } as any}
             >
-            <table
-              style={{
-                width: "100%",
-                minWidth: "600px",
-                borderCollapse: "collapse",
-                fontFamily: "var(--font-inter), sans-serif",
-              }}
-            >
-              {/* Header */}
-              <thead>
-                <tr>
-                  <th
-                    style={{
-                      textAlign: "left",
-                      padding: "16px 20px",
-                      fontFamily: "var(--font-mono), monospace",
-                      fontSize: "10px",
-                      textTransform: "uppercase",
-                      letterSpacing: "2px",
-                      color: "var(--text-muted)",
-                      fontWeight: 400,
-                      borderBottom: "1px solid var(--border)",
-                      width: "35%",
-                    }}
-                  />
-                  <th
-                    style={{
-                      textAlign: "center",
-                      padding: "16px 20px",
-                      fontFamily: "var(--font-mono), monospace",
-                      fontSize: "10px",
-                      textTransform: "uppercase",
-                      letterSpacing: "2px",
-                      color: "var(--text-muted)",
-                      fontWeight: 400,
-                      borderBottom: "1px solid var(--border)",
-                    }}
-                  >
-                    National SaaS Platforms
-                  </th>
-                  <th
-                    style={{
-                      textAlign: "center",
-                      padding: "16px 20px",
-                      fontFamily: "var(--font-mono), monospace",
-                      fontSize: "10px",
-                      textTransform: "uppercase",
-                      letterSpacing: "2px",
-                      color: "var(--text-muted)",
-                      fontWeight: 400,
-                      borderBottom: "1px solid var(--border)",
-                    }}
-                  >
-                    Enterprise Consulting
-                  </th>
-                  <th
-                    style={{
-                      textAlign: "center",
-                      padding: "16px 20px",
-                      fontFamily: "var(--font-mono), monospace",
-                      fontSize: "10px",
-                      textTransform: "uppercase",
-                      letterSpacing: "2px",
-                      color: "var(--eucalyptus)",
-                      fontWeight: 400,
-                      borderLeft: "1px solid var(--eucalyptus)",
-                      borderRight: "1px solid var(--eucalyptus)",
-                      borderTop: "1px solid var(--eucalyptus)",
-                      borderBottom: "none",
-                      background: "rgba(95,133,117,0.04)",
-                    }}
-                  >
-                    Quiet Dissent
-                  </th>
-                </tr>
-              </thead>
-              <tbody>
-                {rows.map((row, i) => (
-                  <tr key={i}>
-                    <td
+              <table
+                style={{
+                  width: "100%",
+                  minWidth: "600px",
+                  borderCollapse: "collapse",
+                  fontFamily: "var(--font-inter), sans-serif",
+                }}
+              >
+                <thead>
+                  <tr>
+                    <th
                       style={{
-                        padding: "18px 20px",
-                        fontFamily: "var(--font-inter), sans-serif",
-                        fontSize: "14px",
-                        color: "var(--text-secondary)",
+                        textAlign: "left",
+                        padding: "16px 20px",
+                        fontFamily: "var(--font-mono), monospace",
+                        fontSize: "10px",
+                        textTransform: "uppercase",
+                        letterSpacing: "2px",
+                        color: "var(--text-muted)",
+                        fontWeight: 400,
                         borderBottom: "1px solid var(--border)",
-                        lineHeight: 1.4,
+                        width: "35%",
                       }}
-                    >
-                      {row.criterion}
-                    </td>
-                    <td
+                    />
+                    <th
                       style={{
-                        padding: "18px 20px",
                         textAlign: "center",
-                        fontFamily: "var(--font-inter), sans-serif",
-                        fontSize: "14px",
-                        color: row.saas === "✗" ? "var(--text-muted)" : "var(--text-secondary)",
+                        padding: "16px 20px",
+                        fontFamily: "var(--font-mono), monospace",
+                        fontSize: "10px",
+                        textTransform: "uppercase",
+                        letterSpacing: "2px",
+                        color: "var(--text-muted)",
+                        fontWeight: 400,
                         borderBottom: "1px solid var(--border)",
                       }}
                     >
-                      {row.saas}
-                    </td>
-                    <td
+                      National SaaS Platforms
+                    </th>
+                    <th
                       style={{
-                        padding: "18px 20px",
                         textAlign: "center",
-                        fontFamily: "var(--font-inter), sans-serif",
-                        fontSize: "14px",
-                        color: row.enterprise === "✗" ? "var(--text-muted)" : "var(--text-secondary)",
+                        padding: "16px 20px",
+                        fontFamily: "var(--font-mono), monospace",
+                        fontSize: "10px",
+                        textTransform: "uppercase",
+                        letterSpacing: "2px",
+                        color: "var(--text-muted)",
+                        fontWeight: 400,
                         borderBottom: "1px solid var(--border)",
                       }}
                     >
-                      {row.enterprise}
-                    </td>
-                    <td
+                      Enterprise Consulting
+                    </th>
+                    <th
                       style={{
-                        padding: "18px 20px",
                         textAlign: "center",
-                        fontFamily: "var(--font-inter), sans-serif",
-                        fontSize: "16px",
+                        padding: "16px 20px",
+                        fontFamily: "var(--font-mono), monospace",
+                        fontSize: "10px",
+                        textTransform: "uppercase",
+                        letterSpacing: "2px",
                         color: "var(--eucalyptus)",
-                        fontWeight: 500,
+                        fontWeight: 400,
                         borderLeft: "1px solid var(--eucalyptus)",
                         borderRight: "1px solid var(--eucalyptus)",
-                        borderTop: "none",
-                        borderBottom: i < rows.length - 1 ? "1px solid rgba(95,133,117,0.15)" : "1px solid var(--eucalyptus)",
+                        borderTop: "1px solid var(--eucalyptus)",
+                        borderBottom: "none",
                         background: "rgba(95,133,117,0.04)",
                       }}
                     >
-                      {row.qd}
-                    </td>
+                      Quiet Dissent
+                    </th>
                   </tr>
-                ))}
-              </tbody>
-            </table>
+                </thead>
+                <tbody>
+                  {rows.map((row, i) => (
+                    <tr key={i}>
+                      <td
+                        style={{
+                          padding: "18px 20px",
+                          fontFamily: "var(--font-inter), sans-serif",
+                          fontSize: "14px",
+                          color: "var(--text-secondary)",
+                          borderBottom: "1px solid var(--border)",
+                          lineHeight: 1.4,
+                        }}
+                      >
+                        {row.criterion}
+                      </td>
+                      <td
+                        style={{
+                          padding: "18px 20px",
+                          textAlign: "center",
+                          fontFamily: "var(--font-inter), sans-serif",
+                          fontSize: "14px",
+                          color: row.saas === "✗" ? "var(--text-muted)" : "var(--text-secondary)",
+                          borderBottom: "1px solid var(--border)",
+                        }}
+                      >
+                        {row.saas}
+                      </td>
+                      <td
+                        style={{
+                          padding: "18px 20px",
+                          textAlign: "center",
+                          fontFamily: "var(--font-inter), sans-serif",
+                          fontSize: "14px",
+                          color: row.enterprise === "✗" ? "var(--text-muted)" : "var(--text-secondary)",
+                          borderBottom: "1px solid var(--border)",
+                        }}
+                      >
+                        {row.enterprise}
+                      </td>
+                      <td
+                        style={{
+                          padding: "18px 20px",
+                          textAlign: "center",
+                          fontFamily: "var(--font-inter), sans-serif",
+                          fontSize: "16px",
+                          color: "var(--eucalyptus)",
+                          fontWeight: 500,
+                          borderLeft: "1px solid var(--eucalyptus)",
+                          borderRight: "1px solid var(--eucalyptus)",
+                          borderTop: "none",
+                          borderBottom: i < rows.length - 1 ? "1px solid rgba(95,133,117,0.15)" : "1px solid var(--eucalyptus)",
+                          background: "rgba(95,133,117,0.04)",
+                        }}
+                      >
+                        {row.qd}
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
             </div>
-            {/* Scroll hint gradient — mobile only */}
-            <div
-              className="md:hidden"
-              style={{
-                position: "absolute",
-                top: 0,
-                right: 0,
-                bottom: 0,
-                width: "48px",
-                background: "linear-gradient(to right, transparent, #F5F4EF)",
-                pointerEvents: "none",
-              }}
-            />
           </div>
         </FadeIn>
       </div>
