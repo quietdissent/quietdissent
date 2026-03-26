@@ -124,7 +124,7 @@ function ServiceCard({
     <div
       style={{
         width: "100%",
-        height: "100%",
+        minHeight: "100%",
         background: t.bg,
         display: "flex",
         flexDirection: "column",
@@ -135,7 +135,7 @@ function ServiceCard({
           maxWidth: "1100px",
           width: "100%",
           margin: "0 auto",
-          padding: fullHeight ? "100px 80px" : "60px 32px",
+          padding: fullHeight ? "80px 80px 120px" : "60px 32px",
           display: "flex",
           flexDirection: "column",
           gap: "28px",
@@ -359,7 +359,7 @@ function PricingBlock() {
               {[
                 ["AI Readiness Assessment", "$500 flat"],
                 ["Systems Implementation", "Scoped per engagement"],
-                ["Fractional Chief AI Officer", "From $1,500/month"],
+                ["Fractional Chief AI Officer", "$3,000–$8,000/month"],
               ].map(([service, price], i) => (
                 <div
                   key={service}
@@ -409,29 +409,7 @@ function PricingBlock() {
             >
               Every engagement starts with a conversation — not a proposal.
             </p>
-            <MagneticButton>
-              <motion.a
-                href="#contact"
-                style={{
-                  display: "inline-flex",
-                  alignItems: "center",
-                  gap: "8px",
-                  background: "var(--eucalyptus)",
-                  color: "#FFFFFF",
-                  padding: "16px 32px",
-                  borderRadius: "4px",
-                  fontFamily: "var(--font-inter), sans-serif",
-                  fontSize: "15px",
-                  fontWeight: 500,
-                  textDecoration: "none",
-                  marginBottom: "16px",
-                }}
-                whileHover={{ background: "#4A7065" }}
-              >
-                Book a Free Strategy Session →
-              </motion.a>
-            </MagneticButton>
-            <div style={{ marginTop: "16px" }}>
+            <div style={{ marginTop: "0px" }}>
               <span
                 style={{
                   fontFamily: "var(--font-inter), sans-serif",
@@ -673,7 +651,7 @@ export default function Solutions() {
             <div
               key={i}
               className="service-card-desktop"
-              style={{ width: "33.333%", flexShrink: 0, height: "100vh" }}
+              style={{ width: "33.333%", flexShrink: 0, minHeight: "100vh" }}
             >
               <ServiceCard card={card} index={i} fullHeight />
             </div>

@@ -116,19 +116,42 @@ export default function Navigation() {
           className="container"
           style={{ display: "flex", alignItems: "center", justifyContent: "space-between" }}
         >
-          {/* Wordmark — Instrument Serif italic */}
+          {/* Wordmark — logo + Instrument Serif italic */}
           <a
             href="#"
             style={{
-              fontFamily: "var(--font-instrument), serif",
-              fontStyle: "italic",
-              fontSize: "20px",
-              color: wordmarkColor,
-              letterSpacing: "-0.01em",
-              transition: "color 0.4s ease",
+              display: "flex",
+              alignItems: "center",
+              gap: "10px",
+              textDecoration: "none",
             }}
           >
-            Quiet Dissent
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img
+              src="/QD_Logo.png"
+              alt=""
+              aria-hidden="true"
+              style={{
+                height: "36px",
+                width: "auto",
+                filter: isLight
+                  ? "brightness(0)"
+                  : "brightness(0) invert(1)",
+                transition: "filter 0.4s ease",
+              }}
+            />
+            <span
+              style={{
+                fontFamily: "var(--font-instrument), serif",
+                fontStyle: "italic",
+                fontSize: "20px",
+                color: wordmarkColor,
+                letterSpacing: "-0.01em",
+                transition: "color 0.4s ease",
+              }}
+            >
+              Quiet Dissent
+            </span>
           </a>
 
           {/* Desktop nav */}
@@ -172,7 +195,7 @@ export default function Navigation() {
                 borderColor: bookHoverBg,
               }}
             >
-              Book a Call
+              Start with a Diagnostic
             </motion.a>
           </div>
 

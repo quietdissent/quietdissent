@@ -57,7 +57,7 @@ export default function Footer() {
               color: "var(--text-muted)",
             }}
           >
-            Strategy first. Technology second. Always.
+            Non-consensus decisions. Measurable outcomes.
           </span>
 
           {/* Nav links */}
@@ -108,15 +108,30 @@ export default function Footer() {
           >
             © 2026 Quiet Dissent. All rights reserved.
           </span>
-          <span
-            style={{
-              fontFamily: "var(--font-mono), monospace",
-              fontSize: "11px",
-              color: "var(--text-muted)",
-            }}
-          >
-            (615) 000-0000
-          </span>
+          <div style={{ display: "flex", gap: "24px", flexWrap: "wrap", alignItems: "center" }}>
+            <a
+              href="tel:6156734210"
+              style={{
+                fontFamily: "var(--font-mono), monospace",
+                fontSize: "11px",
+                color: "var(--text-muted)",
+                textDecoration: "none",
+              }}
+            >
+              (615) 673-4210
+            </a>
+            <a
+              href="mailto:hello@quietdissent.com"
+              style={{
+                fontFamily: "var(--font-mono), monospace",
+                fontSize: "11px",
+                color: "var(--text-muted)",
+                textDecoration: "none",
+              }}
+            >
+              hello@quietdissent.com
+            </a>
+          </div>
         </div>
       </div>
     </motion.footer>

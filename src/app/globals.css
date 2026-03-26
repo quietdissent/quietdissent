@@ -102,6 +102,11 @@ h1, h2, h3, h4 {
   letter-spacing: -0.02em;
 }
 
+/* Prevent flash of light body background before hero dark section renders */
+#hero {
+  background-color: #111111;
+}
+
 .hero-glow {
   position: absolute;
   top: 20%;
@@ -116,7 +121,11 @@ h1, h2, h3, h4 {
   );
   filter: blur(60px);
   border-radius: 50%;
+  /* Pin to the animation's from-state so there is no opacity/transform pop on first paint */
+  opacity: 0.6;
+  transform: scale(1) translateY(0);
   animation: heroGlow 8s ease-in-out infinite alternate;
+  animation-fill-mode: both;
 }
 
 @keyframes heroGlow {
