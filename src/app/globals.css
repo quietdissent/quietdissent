@@ -41,6 +41,8 @@ body {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   overflow-x: hidden;
+  zoom: 0.9;
+  width: calc(100% / 0.9);
 }
 
 ::selection {
