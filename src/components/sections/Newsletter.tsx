@@ -248,7 +248,7 @@ export default function Newsletter() {
                         color: "rgba(255,255,240,0.45)",
                       }}
                     >
-                      Watch your inbox.
+                      Check inbox — then Promotions or Spam if the internet got dramatic.
                     </p>
                   </motion.div>
                 ) : (
