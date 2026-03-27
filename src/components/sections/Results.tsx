@@ -43,14 +43,12 @@ function DesktopLayout() {
 
     const cardEls = gsap.utils.toArray<HTMLElement>(".result-card-sticky");
 
-    // Each card pins for 100vh of scroll, then the next one slides over it
+    // Cards are CSS sticky — ScrollTrigger only tracks active index
     cardEls.forEach((card, i) => {
       ScrollTrigger.create({
         trigger: card,
         start: "top top",
         end: "bottom top",
-        pin: true,
-        pinSpacing: false,
         onEnter: () => setActiveIndex(i),
         onEnterBack: () => setActiveIndex(i),
       });
@@ -115,7 +113,8 @@ function DesktopLayout() {
             display: "flex",
             alignItems: "center",
             justifyContent: "center",
-            position: "relative",
+            position: "sticky",
+            top: 0,
             zIndex: i + 2,
           }}
         >
