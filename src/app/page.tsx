@@ -30,13 +30,13 @@ export default function Home() {
         <Problem />
         <HowAIWorks />
         <Solutions />
+        <Newsletter />
         <HowItWorks />
         <Comparison />
         <Results />
         <Promises />
         <FAQ />
         <Contact />
-        <Newsletter />
         <About />
       </main>
       <Footer />
