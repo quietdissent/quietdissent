@@ -6,7 +6,9 @@
       "Bash(npm install:*)",
       "Bash(npm run:*)",
       "Bash(sleep:*)",
-      "Bash(curl:*)"
+      "Bash(curl:*)",
+      "Bash(find /c/Users/jupiter/Projects/quietdissent -type f \\\\\\(-name tailwind.config.* -o -name tailwind.css \\\\\\))",
+      "Bash(grep:*)"
     ]
   }
 }

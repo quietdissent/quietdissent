@@ -584,6 +584,7 @@ function DesktopLayout() {
                     top: 0,
                     left: 0,
                     right: 0,
+                    opacity: i === 0 ? 1 : 0,
                   }}
                 >
                   {/* Step subtitle badge */}

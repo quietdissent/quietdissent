@@ -32,6 +32,7 @@ html {
   scroll-behavior: smooth;
   scroll-padding-top: 100px;
   font-size: 15px;
+  zoom: 0.9;
 }
 
 body {
@@ -41,8 +42,6 @@ body {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   overflow-x: hidden;
-  zoom: 0.9;
-  width: calc(100% / 0.9);
 }
 
 ::selection {
