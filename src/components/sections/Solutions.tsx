@@ -415,7 +415,7 @@ export default function Solutions() {
         pin: true,
         scrub: 1,
         snap: 1 / (cardEls.length - 1),
-        end: () => "+=" + wrapperRef.current!.offsetWidth,
+        end: () => "+=" + wrapperRef.current!.offsetWidth * (cardEls.length - 1),
         onUpdate: (self) => {
           const idx = Math.min(
             Math.floor(self.progress * cardEls.length),
