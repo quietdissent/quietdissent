@@ -8,7 +8,10 @@
       "Bash(sleep:*)",
       "Bash(curl:*)",
       "Bash(find /c/Users/jupiter/Projects/quietdissent -type f \\\\\\(-name tailwind.config.* -o -name tailwind.css \\\\\\))",
-      "Bash(grep:*)"
+      "Bash(grep:*)",
+      "Bash(git add:*)",
+      "Bash(git commit:*)",
+      "Bash(git push:*)"
     ]
   }
 }
