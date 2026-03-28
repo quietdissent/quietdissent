@@ -37,15 +37,26 @@ function CharReveal({ text }: { text: string }) {
     ScrollTrigger.create({
       trigger: el,
       start: "top 80%",
-      once: true,
       onEnter: () => {
         gsap.to(
           chars.map((c) => c.inner),
           {
             y: 0,
-            duration: 0.8,
+            duration: 1.6,
             ease: "power3.out",
-            stagger: 0.025,
+            stagger: 0.055,
+          }
+        );
+      },
+      onEnterBack: () => {
+        gsap.set(chars.map((c) => c.inner), { y: "110%" });
+        gsap.to(
+          chars.map((c) => c.inner),
+          {
+            y: 0,
+            duration: 1.6,
+            ease: "power3.out",
+            stagger: 0.055,
           }
         );
       },
@@ -58,7 +69,7 @@ function CharReveal({ text }: { text: string }) {
       style={{
         fontFamily: "var(--font-instrument), serif",
         fontSize: "clamp(32px, 5vw, 64px)",
-        color: "var(--text-primary)",
+        color: "#b35a44",
         lineHeight: 1.1,
         letterSpacing: "-0.03em",
         marginBottom: "24px",

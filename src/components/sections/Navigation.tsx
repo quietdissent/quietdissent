@@ -17,6 +17,7 @@ export default function Navigation() {
   const [isLight, setIsLight] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
   const [scrollProgress, setScrollProgress] = useState(0);
+  const [contactActive, setContactActive] = useState(false);
 
   useEffect(() => {
     if (typeof window === "undefined") return;
@@ -43,6 +44,18 @@ export default function Navigation() {
       { threshold: 0.05 }
     );
     observer.observe(hero);
+    return () => observer.disconnect();
+  }, []);
+
+  useEffect(() => {
+    if (typeof window === "undefined") return;
+    const contact = document.querySelector("#contact");
+    if (!contact) return;
+    const observer = new IntersectionObserver(
+      ([entry]) => setContactActive(entry.isIntersecting),
+      { threshold: 0.1 }
+    );
+    observer.observe(contact);
     return () => observer.disconnect();
   }, []);
 
@@ -166,11 +179,11 @@ export default function Navigation() {
                   fontSize: "12px",
                   textTransform: "uppercase",
                   letterSpacing: "1.5px",
-                  color: linkColor,
+                  color: link.label === "Contact" && contactActive ? "#b35a44" : linkColor,
                   transition: "color 0.2s ease",
                 }}
                 onMouseEnter={(e) => (e.currentTarget.style.color = linkHover)}
-                onMouseLeave={(e) => (e.currentTarget.style.color = linkColor)}
+                onMouseLeave={(e) => (e.currentTarget.style.color = link.label === "Contact" && contactActive ? "#b35a44" : linkColor)}
               >
                 {link.label}
               </a>
