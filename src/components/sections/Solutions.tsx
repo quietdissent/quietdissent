@@ -535,7 +535,7 @@ export default function Solutions() {
       <div
         ref={wrapperRef}
         data-cursor="drag"
-        style={{ width: "100%", overflow: "hidden", position: "relative", zIndex: 1 }}
+        style={{ width: "100%", overflow: "hidden", position: "relative", zIndex: 10 }}
       >
         {/* Progress dashes */}
         <div

@@ -51,6 +51,8 @@ export default function Newsletter() {
         backgroundColor: "#F5F4EF",
         padding: "80px 0",
         borderTop: "1px solid var(--border)",
+        position: "relative",
+        zIndex: 1,
       }}
     >
       <div className="container">
