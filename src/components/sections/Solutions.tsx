@@ -83,8 +83,8 @@ const cardThemes = [
     body: "#A1A1AA",
     sectionLabel: "rgba(255,255,255,0.35)",
     stepNum: "#E5E4E2",
-    ctaColor: "#b35a44",
-    ctaBorder: "#b35a44",
+    ctaColor: "#E5E4E2",
+    ctaBorder: "#E5E4E2",
     ctaHover: "rgba(179,90,68,0.15)",
   },
   {
@@ -93,8 +93,8 @@ const cardThemes = [
     body: "#4A4A4A",
     sectionLabel: "#9A9691",
     stepNum: "#5F8575",
-    ctaColor: "#b35a44",
-    ctaBorder: "#b35a44",
+    ctaColor: "#1A1A1A",
+    ctaBorder: "#1A1A1A",
     ctaHover: "rgba(179,90,68,0.15)",
   },
   {
@@ -103,8 +103,8 @@ const cardThemes = [
     body: "#A1A1AA",
     sectionLabel: "rgba(255,255,255,0.35)",
     stepNum: "#E5E4E2",
-    ctaColor: "#b35a44",
-    ctaBorder: "#b35a44",
+    ctaColor: "#E5E4E2",
+    ctaBorder: "#E5E4E2",
     ctaHover: "rgba(179,90,68,0.15)",
   },
 ];
@@ -336,7 +336,7 @@ function ServiceCard({
                 fontWeight: 500,
                 textDecoration: "none",
               }}
-              whileHover={{ background: t.ctaHover }}
+              whileHover={{ background: "rgba(179,90,68,0.15)", borderColor: "#b35a44", color: "#b35a44" }}
             >
               {card.cta}
             </motion.a>
