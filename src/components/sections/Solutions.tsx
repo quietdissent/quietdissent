@@ -347,86 +347,6 @@ function ServiceCard({
   );
 }
 
-// ─── Pricing block (shared) ───────────────────────────────────────────────────
-
-function PricingBlock() {
-  return (
-    <div style={{ padding: "80px 0", borderTop: "1px solid var(--border)", backgroundColor: "#F5F4EF", position: "relative", zIndex: 1 }}>
-      <div className="container">
-        <FadeIn>
-          <div style={{ textAlign: "center" }}>
-            <div style={{ maxWidth: "800px", margin: "0 auto" }}>
-              {[
-                ["AI Readiness Assessment", "$500 flat"],
-                ["Systems Implementation", "Scoped per engagement"],
-                ["Fractional Chief AI Officer", "$3,000–$8,000/month"],
-              ].map(([service, price], i) => (
-                <div
-                  key={service}
-                  style={{
-                    display: "flex",
-                    justifyContent: "space-between",
-                    alignItems: "baseline",
-                    padding: "28px 0",
-                    borderBottom: i < 2 ? "1px solid var(--border)" : "none",
-                  }}
-                >
-                  <span
-                    style={{
-                      fontFamily: "var(--font-instrument), serif",
-                      fontSize: "24px",
-                      color: "var(--text-primary)",
-                      textAlign: "left",
-                    }}
-                  >
-                    {service}
-                  </span>
-                  <span
-                    style={{
-                      fontFamily: "var(--font-mono), monospace",
-                      fontSize: "18px",
-                      color: "var(--text-secondary)",
-                      textAlign: "right",
-                      flexShrink: 0,
-                      marginLeft: "24px",
-                    }}
-                  >
-                    {price}
-                  </span>
-                </div>
-              ))}
-            </div>
-
-            <p
-              style={{
-                fontFamily: "var(--font-instrument), serif",
-                fontStyle: "italic",
-                fontSize: "18px",
-                color: "var(--text-muted)",
-                marginTop: "40px",
-                marginBottom: "40px",
-              }}
-            >
-              Every engagement starts with a conversation — not a proposal.
-            </p>
-            <div style={{ marginTop: "0px" }}>
-              <span
-                style={{
-                  fontFamily: "var(--font-inter), sans-serif",
-                  fontSize: "13px",
-                  color: "var(--text-muted)",
-                }}
-              >
-                Nashville-based. Founder-led. You talk to the same person who does the work.
-              </span>
-            </div>
-          </div>
-        </FadeIn>
-      </div>
-    </div>
-  );
-}
-
 // ─── Section header (shared) ──────────────────────────────────────────────────
 
 function SectionHeader() {
@@ -595,8 +515,6 @@ export default function Solutions() {
           ))}
         </div>
 
-        <PricingBlock />
-
         <style>{`
           .solutions-carousel { scrollbar-width: none; }
           .solutions-carousel::-webkit-scrollbar { display: none; }
@@ -658,8 +576,6 @@ export default function Solutions() {
           ))}
         </div>
       </div>
-
-      <PricingBlock />
 
       <style>{`
         @media (max-width: 768px) {
