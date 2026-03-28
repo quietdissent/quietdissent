@@ -83,9 +83,9 @@ const cardThemes = [
     body: "#A1A1AA",
     sectionLabel: "rgba(255,255,255,0.35)",
     stepNum: "#E5E4E2",
-    ctaColor: "#E5E4E2",
-    ctaBorder: "#E5E4E2",
-    ctaHover: "rgba(229,228,226,0.1)",
+    ctaColor: "#b35a44",
+    ctaBorder: "#b35a44",
+    ctaHover: "rgba(179,90,68,0.15)",
   },
   {
     bg: "#F5F4EF",
@@ -93,9 +93,9 @@ const cardThemes = [
     body: "#4A4A4A",
     sectionLabel: "#9A9691",
     stepNum: "#5F8575",
-    ctaColor: "#1A1A1A",
-    ctaBorder: "#1A1A1A",
-    ctaHover: "rgba(26,26,26,0.06)",
+    ctaColor: "#b35a44",
+    ctaBorder: "#b35a44",
+    ctaHover: "rgba(179,90,68,0.15)",
   },
   {
     bg: "#1C1C1E",
@@ -103,9 +103,9 @@ const cardThemes = [
     body: "#A1A1AA",
     sectionLabel: "rgba(255,255,255,0.35)",
     stepNum: "#E5E4E2",
-    ctaColor: "#E5E4E2",
-    ctaBorder: "#E5E4E2",
-    ctaHover: "rgba(229,228,226,0.1)",
+    ctaColor: "#b35a44",
+    ctaBorder: "#b35a44",
+    ctaHover: "rgba(179,90,68,0.15)",
   },
 ];
 

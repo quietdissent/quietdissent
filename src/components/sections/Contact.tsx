@@ -437,7 +437,7 @@ export default function Contact() {
                           display: "inline-flex",
                           alignItems: "center",
                           gap: "8px",
-                          background: loading ? "#4A6B5F" : "#5F8575",
+                          background: loading ? "#8a4535" : "#b35a44",
                           color: "#FFFFFF",
                           padding: "18px 36px",
                           borderRadius: "4px",
@@ -450,7 +450,7 @@ export default function Contact() {
                           opacity: loading ? 0.75 : 1,
                           transition: "opacity 0.2s ease, background 0.2s ease",
                         }}
-                        whileHover={loading ? {} : { background: "#4A6B5F" }}
+                        whileHover={loading ? {} : { background: "#8a4535" }}
                         transition={{ duration: 0.3 }}
                       >
                         {loading ? "Sending…" : "Send Your Inquiry →"}
