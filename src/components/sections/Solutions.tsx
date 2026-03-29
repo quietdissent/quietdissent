@@ -36,9 +36,9 @@ const cards = [
     headline: "Systems Implementation",
     subline: "Custom-Scoped Build + Monthly Retainer",
     description:
-      "We build the systems your assessment identified — voice agents, chatbots, CRM automation, inbox management, workflow integrations. Then we stay. You get a build partner and an operations partner in one engagement.",
+      "We implement or build the systems your assessment identified — voice agents, chatbots, CRM automation, inbox management, workflow integrations. Then we stay. You get a build partner and an operations partner in one engagement.",
     whatYouGet: [
-      "Custom-built systems scoped to your specific gaps",
+      "Tried and true implementations and systems scoped to your specific gaps",
       "Full configuration — your voice, your rules, your workflows",
       "Monthly performance reports and ongoing tuning",
       "Direct access — no tickets, no runaround",
@@ -46,8 +46,8 @@ const cards = [
     howItRuns: [
       "Assessment identifies which systems move the needle",
       "Scope and price transparently — 50/50 split",
-      "Build, test, and train in two weeks",
-      "Monthly retainer begins — we stay accountable",
+      "Build, test, and train in a couple weeks with continued support",
+      "20% Monthly retainer begins — we stay accountable",
     ],
     cta: "Discuss a Build →",
     ctaHref: "#contact",
@@ -57,11 +57,11 @@ const cards = [
     headline: "Custom Builds & Fractional Chief AI Officer",
     subline: "Project-Based + Strategic Retainer",
     description:
-      "Some problems don't fit a standard playbook. Whether it's a custom AI agent, a complex multi-system workflow, or ongoing strategic leadership — this is senior-level AI guidance without the cost of a full-time hire.",
+      "Some problems don't fit a standard playbook. Whether it's a custom AI agent, a complex multi-system workflow, or ongoing strategic leadership — this is senior-level AI guidance without the cost of a full-time hire with relaible trusted systems. No guinea pig.",
     whatYouGet: [
-      "Custom agents and workflows built from scratch",
+      "Custom agents and workflows built from scratch with proven systems and software",
       "Ongoing strategic guidance on AI adoption",
-      "Monthly working sessions and quarterly roadmap updates",
+      "Monthly working sessions, quarterly roadmap updates, continued local support",
       "Vendor evaluation — I review before you buy",
     ],
     howItRuns: [
