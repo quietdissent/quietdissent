@@ -15,17 +15,17 @@ const cards = [
     headline: "AI Readiness Assessment",
     subline: "$500 · The Starting Point",
     description:
-      "Before we recommend a single tool, we learn your business. We visit your operation, map your workflows, and quantify what your gaps are actually costing you — then deliver a written report you can act on, whether you hire us or not.",
+      "Before recommending any tool, we start by understanding your business. We assess your operation, map your workflows, and measure the real cost of inefficiencies and missed opportunities. From there, we deliver a practical written report with tailored AI tool recommendations, relevant use cases, workflow ideas, and clear next steps you can act on whether you work with us or not.",
     whatYouGet: [
       "Revenue Leak Audit — your actual numbers, not estimates",
-      "On-site workflow discovery — the unwritten rules no remote consultant asks about",
+      "Workflow discovery — Mapped workflows, bottlenecks, and inefficiencies.",
       "Prioritized roadmap ranked by ROI",
       "Conservative projection of what you'll recover",
     ],
     howItRuns: [
-      "30-minute intake call",
-      "On-site visit (1–2 hours)",
-      "Written report within 5 business days",
+      "Intake & Onboarding call",
+      "Optional On-site visit (1–2 hours)",
+      "Written AI Tools Recommendations & Use Cases within 5 business days",
       "Findings walkthrough — no open questions",
     ],
     cta: "Book Your Assessment →",
