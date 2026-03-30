@@ -201,7 +201,7 @@ export default function Navigation() {
                 borderColor: bookHoverBg,
               }}
             >
-              Book a Consultation
+              Let's Talk
             </motion.a>
           </div>
 
@@ -275,6 +275,7 @@ export default function Navigation() {
     </>
   );
 }
+
 
 
 
