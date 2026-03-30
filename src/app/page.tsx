@@ -30,8 +30,8 @@ export default function Home() {
         <Problem />
         <HowAIWorks />
         <HowItWorks />
-        <Solutions />
         <Newsletter />
+        <Solutions />
         <Comparison />
         <Results />
         <Promises />
