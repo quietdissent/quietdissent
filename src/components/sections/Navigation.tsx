@@ -8,7 +8,6 @@ const navLinks = [
   { label: "Solutions", href: "#solutions" },
   { label: "Results", href: "#results" },
   { label: "FAQ", href: "#faq" },
-  { label: "Contact", href: "#contact" },
 ];
 
 export default function Navigation() {
@@ -202,7 +201,7 @@ export default function Navigation() {
                 borderColor: bookHoverBg,
               }}
             >
-              Start with a Diagnostic
+              Let's Talk
             </motion.a>
           </div>
 
@@ -276,4 +275,7 @@ export default function Navigation() {
     </>
   );
 }
+
+
+
 
