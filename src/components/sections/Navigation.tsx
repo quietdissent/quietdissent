@@ -4,8 +4,9 @@ import { useEffect, useRef, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 
 const navLinks = [
-  { label: "Solutions", href: "#solutions" },
   { label: "How It Works", href: "#how-it-works" },
+  { label: "Newsletter", href: "#newsletter" },
+  { label: "Solutions", href: "#solutions" },
   { label: "Results", href: "#results" },
   { label: "FAQ", href: "#faq" },
   { label: "Contact", href: "#contact" },
@@ -33,7 +34,6 @@ export default function Navigation() {
     return () => window.removeEventListener("scroll", onScroll);
   }, []);
 
-  // Switch nav palette when hero exits viewport
   useEffect(() => {
     if (typeof window === "undefined") return;
     const hero = document.querySelector("#hero");
@@ -63,7 +63,6 @@ export default function Navigation() {
     setMenuOpen(false);
   };
 
-  // Colors based on mode
   const bg = isLight
     ? scrolled ? "#F5F4EF" : "transparent"
     : scrolled ? "rgba(17,17,17,0.93)" : "transparent";
@@ -83,7 +82,6 @@ export default function Navigation() {
 
   return (
     <>
-      {/* Scroll progress bar */}
       {scrolled && (
         <div
           style={{
@@ -129,7 +127,6 @@ export default function Navigation() {
           className="container"
           style={{ display: "flex", alignItems: "center", justifyContent: "space-between" }}
         >
-          {/* Wordmark — logo + Instrument Serif italic */}
           <a
             href="#"
             style={{
@@ -139,7 +136,6 @@ export default function Navigation() {
               textDecoration: "none",
             }}
           >
-            {/* eslint-disable-next-line @next/next/no-img-element */}
             <img
               src="/QD_Logo.png"
               alt=""
@@ -167,7 +163,6 @@ export default function Navigation() {
             </span>
           </a>
 
-          {/* Desktop nav */}
           <div className="hidden md:flex" style={{ alignItems: "center", gap: "32px" }}>
             {navLinks.map((link) => (
               <a
@@ -212,7 +207,6 @@ export default function Navigation() {
             </motion.a>
           </div>
 
-          {/* Mobile hamburger */}
           <button
             className="md:hidden"
             onClick={() => setMenuOpen(!menuOpen)}
@@ -241,7 +235,6 @@ export default function Navigation() {
         </div>
       </motion.nav>
 
-      {/* Mobile overlay */}
       <AnimatePresence>
         {menuOpen && (
           <motion.div
