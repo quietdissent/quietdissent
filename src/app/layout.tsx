@@ -4,6 +4,7 @@ import "./globals.css";
 import SplashCursor from "@/components/animations/SplashCursor";
 import LiquidEther from "@/components/animations/LiquidEther";
 import AnchorScroll from "@/components/AnchorScroll";
+import { Analytics } from '@vercel/analytics/next';
 
 const instrumentSerif = Instrument_Serif({
   variable: "--font-instrument",
@@ -76,6 +77,7 @@ export default function RootLayout({
         <SplashCursor />
         <LiquidEther />
         {children}
+        <Analytics />
       </body>
     </html>
   );
