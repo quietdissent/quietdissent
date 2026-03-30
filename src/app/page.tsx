@@ -29,9 +29,9 @@ export default function Home() {
         />
         <Problem />
         <HowAIWorks />
+        <HowItWorks />
         <Solutions />
         <Newsletter />
-        <HowItWorks />
         <Comparison />
         <Results />
         <Promises />
