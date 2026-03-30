@@ -15,17 +15,17 @@ const cards = [
     headline: "AI Readiness Assessment",
     subline: "$500 · The Starting Point",
     description:
-      "Before we recommend a single tool, we learn your business. We visit your operation, map your workflows, and quantify what your gaps are actually costing you — then deliver a written report you can act on, whether you hire us or not.",
+      "Before recommending any tool, we start by understanding your business. We assess your operation, map your workflows, and measure the real cost of inefficiencies and missed opportunities. From there, we deliver a practical written report with tailored AI tool recommendations, relevant use cases, workflow ideas, and clear next steps you can act on whether you work with us or not.",
     whatYouGet: [
       "Revenue Leak Audit — your actual numbers, not estimates",
-      "On-site workflow discovery — the unwritten rules no remote consultant asks about",
+      "Workflow discovery — Mapped workflows, bottlenecks, and inefficiencies.",
       "Prioritized roadmap ranked by ROI",
       "Conservative projection of what you'll recover",
     ],
     howItRuns: [
-      "30-minute intake call",
-      "On-site visit (1–2 hours)",
-      "Written report within 5 business days",
+      "Intake & Onboarding call",
+      "Optional On-site visit (1–2 hours)",
+      "Written AI Tools Recommendations & Use Cases within 5 business days",
       "Findings walkthrough — no open questions",
     ],
     cta: "Book Your Assessment →",
@@ -36,9 +36,9 @@ const cards = [
     headline: "Systems Implementation",
     subline: "Custom-Scoped Build + Monthly Retainer",
     description:
-      "We build the systems your assessment identified — voice agents, chatbots, CRM automation, inbox management, workflow integrations. Then we stay. You get a build partner and an operations partner in one engagement.",
+      "We implement or build the systems your assessment identified — voice agents, chatbots, CRM automation, inbox management, workflow integrations. Then we stay. You get a build partner and an operations partner in one engagement.",
     whatYouGet: [
-      "Custom-built systems scoped to your specific gaps",
+      "Tried and true implementations and systems scoped to your specific gaps",
       "Full configuration — your voice, your rules, your workflows",
       "Monthly performance reports and ongoing tuning",
       "Direct access — no tickets, no runaround",
@@ -46,8 +46,8 @@ const cards = [
     howItRuns: [
       "Assessment identifies which systems move the needle",
       "Scope and price transparently — 50/50 split",
-      "Build, test, and train in two weeks",
-      "Monthly retainer begins — we stay accountable",
+      "Build, test, and train in a couple weeks with continued support",
+      "20% Monthly retainer begins — we stay accountable",
     ],
     cta: "Discuss a Build →",
     ctaHref: "#contact",
@@ -57,11 +57,11 @@ const cards = [
     headline: "Custom Builds & Fractional Chief AI Officer",
     subline: "Project-Based + Strategic Retainer",
     description:
-      "Some problems don't fit a standard playbook. Whether it's a custom AI agent, a complex multi-system workflow, or ongoing strategic leadership — this is senior-level AI guidance without the cost of a full-time hire.",
+      "Some problems don't fit a standard playbook. Whether it's a custom AI agent, a complex multi-system workflow, or ongoing strategic leadership — this is senior-level AI guidance without the cost of a full-time hire with relaible trusted systems. No guinea pig.",
     whatYouGet: [
-      "Custom agents and workflows built from scratch",
+      "Custom agents and workflows built from scratch with proven systems and software",
       "Ongoing strategic guidance on AI adoption",
-      "Monthly working sessions and quarterly roadmap updates",
+      "Monthly working sessions, quarterly roadmap updates, continued local support",
       "Vendor evaluation — I review before you buy",
     ],
     howItRuns: [
