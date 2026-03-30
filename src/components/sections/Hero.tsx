@@ -323,7 +323,7 @@ export default function Hero() {
                 whileHover={{ background: "#5F8575", color: "#FFFFFF", borderColor: "#5F8575" }}
                 transition={{ duration: 0.3 }}
               >
-                See What&apos;s Possible →
+                Book a Consultation →
               </motion.a>
             </MagneticButton>
 
