@@ -45,7 +45,7 @@ export default function Newsletter() {
   };
 
   return (
-    <section
+    <section id="newsletter"
       className="newsletter-section"
       style={{
         backgroundColor: "#F5F4EF",
@@ -413,3 +413,4 @@ export default function Newsletter() {
     </section>
   );
 }
+
