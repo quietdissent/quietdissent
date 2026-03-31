@@ -138,7 +138,6 @@ function MobileLayout() {
         </FadeIn>
 
         <div style={{ display: "grid", gridTemplateColumns: "20px 1fr", gap: "60px" }}>
-          {/* SVG line column */}
           <div ref={svgColRef} style={{ position: "relative" }}>
             <svg
               ref={svgRef}
@@ -155,7 +154,6 @@ function MobileLayout() {
             </svg>
           </div>
 
-          {/* Steps */}
           <div style={{ display: "flex", flexDirection: "column", gap: "64px" }}>
             {steps.map((step, i) => (
               <div
@@ -242,7 +240,6 @@ export default function HowItWorks() {
     return () => window.removeEventListener("resize", check);
   }, []);
 
-  // Avoid layout mismatch on first render
   if (!mounted) return null;
   if (isMobile) return <MobileLayout />;
 
@@ -255,8 +252,8 @@ function DesktopLayout() {
   const svgRef = useRef<SVGSVGElement>(null);
   const pathRef = useRef<SVGPathElement>(null);
   const circleRefs = useRef<(SVGCircleElement | null)[]>([]);
-  const stepRefs = useRef<(HTMLDivElement | null)[]>([]);    // left col rows
-  const numberRefs = useRef<(HTMLDivElement | null)[]>([]);  // number+title wrappers
+  const stepRefs = useRef<(HTMLDivElement | null)[]>([]);
+  const numberRefs = useRef<(HTMLDivElement | null)[]>([]);
   const headingRef = useRef<HTMLHeadingElement>(null);
   const rightContentRefs = useRef<(HTMLDivElement | null)[]>([]);
   const ghostNumRef = useRef<HTMLDivElement>(null);
@@ -269,13 +266,15 @@ function DesktopLayout() {
     const outer = outerRef.current;
     if (!outer) return;
 
-    // Set initial right content states
     rightContentRefs.current.forEach((el, i) => {
       if (!el) return;
-      gsap.set(el, { opacity: i === 0 ? 1 : 0, y: i === 0 ? 0 : 20 });
+      gsap.set(el, {
+        autoAlpha: i === 0 ? 1 : 0,
+        y: i === 0 ? 0 : 20,
+        pointerEvents: i === 0 ? "auto" : "none",
+      });
     });
 
-    // Set initial left column active states
     numberRefs.current.forEach((el, i) => {
       if (!el) return;
       gsap.set(el, {
@@ -284,7 +283,6 @@ function DesktopLayout() {
       });
     });
 
-    // SVG line draw — measured after layout settles
     const rafId = requestAnimationFrame(() => {
       const svgEl = svgRef.current;
       const pathEl = pathRef.current;
@@ -299,7 +297,6 @@ function DesktopLayout() {
       const totalLength = pathEl.getTotalLength();
       gsap.set(pathEl, { strokeDasharray: totalLength, strokeDashoffset: totalLength });
 
-      // Position circles at each step row's vertical offset
       stepRefs.current.forEach((stepEl, i) => {
         const circleEl = circleRefs.current[i];
         if (!stepEl || !circleEl) return;
@@ -309,7 +306,6 @@ function DesktopLayout() {
         gsap.set(circleEl, { scale: 0, transformOrigin: "center center" });
       });
 
-      // Scroll-driven line draw over 400vh outer container
       ScrollTrigger.create({
         trigger: outer,
         start: "top 80%",
@@ -329,13 +325,11 @@ function DesktopLayout() {
       });
     });
 
-    // Step activation
     const setActiveStep = (index: number) => {
       const prev = activeStepRef.current;
       if (prev === index) return;
       activeStepRef.current = index;
 
-      // Fade heading out after step 0
       if (headingRef.current) {
         gsap.to(headingRef.current, {
           opacity: index === 0 ? 1 : 0,
@@ -345,28 +339,39 @@ function DesktopLayout() {
         });
       }
 
-      // Outgoing right content
       const outgoing = rightContentRefs.current[prev];
       if (outgoing) {
-        gsap.to(outgoing, { opacity: 0, y: -20, duration: 0.3, ease: "power2.in" });
+        gsap.to(outgoing, {
+          autoAlpha: 0,
+          y: -20,
+          duration: 0.25,
+          ease: "power2.in",
+          pointerEvents: "none",
+          overwrite: "auto",
+        });
       }
 
-      // Incoming right content
       const incoming = rightContentRefs.current[index];
       if (incoming) {
         gsap.fromTo(
           incoming,
-          { opacity: 0, y: 20 },
-          { opacity: 1, y: 0, duration: 0.4, ease: "power2.out", delay: 0.1 }
+          { autoAlpha: 0, y: 20 },
+          {
+            autoAlpha: 1,
+            y: 0,
+            duration: 0.4,
+            ease: "power2.out",
+            delay: 0.05,
+            pointerEvents: "auto",
+            overwrite: "auto",
+          }
         );
       }
 
-      // Ghost number
       if (ghostNumRef.current) {
         ghostNumRef.current.textContent = steps[index].number;
       }
 
-      // Left column active states
       numberRefs.current.forEach((el, i) => {
         if (!el) return;
         gsap.to(el, {
@@ -378,7 +383,6 @@ function DesktopLayout() {
       });
     };
 
-    // 4 trigger zones — one per step
     const triggers = triggerZoneRefs.current.map((zone, i) => {
       if (!zone) return null;
       return ScrollTrigger.create({
@@ -406,10 +410,7 @@ function DesktopLayout() {
         position: "relative",
       }}
     >
-      {/* 400vh scroll space with trigger zones */}
       <div ref={outerRef} style={{ position: "relative", height: "400vh" }}>
-
-        {/* Invisible trigger zones — one per step, 100vh each */}
         {steps.map((_, i) => (
           <div
             key={i}
@@ -424,7 +425,6 @@ function DesktopLayout() {
           />
         ))}
 
-        {/* Sticky panel */}
         <div
           style={{
             position: "sticky",
@@ -436,7 +436,6 @@ function DesktopLayout() {
             alignItems: "center",
           }}
         >
-          {/* ── LEFT SIDE ─────────────────────────────── */}
           <div
             style={{
               height: "100%",
@@ -448,7 +447,6 @@ function DesktopLayout() {
               position: "relative",
             }}
           >
-            {/* Section heading */}
             <h2
               ref={headingRef}
               style={{
@@ -463,9 +461,7 @@ function DesktopLayout() {
               Simple Process. Real Results.
             </h2>
 
-            {/* SVG line + step list */}
             <div ref={svgColRef} style={{ position: "relative", paddingLeft: "40px" }}>
-              {/* SVG strip — absolute, spanning full height of step list */}
               <div
                 style={{
                   position: "absolute",
@@ -500,11 +496,9 @@ function DesktopLayout() {
                 </svg>
               </div>
 
-              {/* Step rows */}
               <div style={{ display: "flex", flexDirection: "column", gap: "32px" }}>
                 {steps.map((step, i) => (
                   <div key={i} ref={(el) => { stepRefs.current[i] = el; }}>
-                    {/* Number + title wrapper — color controlled via GSAP */}
                     <div
                       ref={(el) => { numberRefs.current[i] = el; }}
                       style={{
@@ -541,7 +535,6 @@ function DesktopLayout() {
             </div>
           </div>
 
-          {/* ── RIGHT SIDE ────────────────────────────── */}
           <div
             style={{
               position: "relative",
@@ -552,7 +545,6 @@ function DesktopLayout() {
               overflow: "hidden",
             }}
           >
-            {/* Ghost number — updates with active step */}
             <div
               ref={ghostNumRef}
               style={{
@@ -573,21 +565,27 @@ function DesktopLayout() {
               01
             </div>
 
-            {/* Content blocks — stacked, GSAP controls visibility */}
-            <div style={{ position: "relative", maxWidth: "480px", width: "100%", zIndex: 1 }}>
+            <div
+              style={{
+                position: "relative",
+                maxWidth: "480px",
+                width: "100%",
+                minHeight: "260px",
+                zIndex: 1,
+              }}
+            >
               {steps.map((step, i) => (
                 <div
                   key={i}
                   ref={(el) => { rightContentRefs.current[i] = el; }}
                   style={{
-                    position: i === 0 ? "relative" : "absolute",
-                    top: 0,
-                    left: 0,
-                    right: 0,
+                    position: "absolute",
+                    inset: 0,
                     opacity: i === 0 ? 1 : 0,
+                    visibility: i === 0 ? "visible" : "hidden",
+                    pointerEvents: i === 0 ? "auto" : "none",
                   }}
                 >
-                  {/* Step subtitle badge */}
                   <div
                     style={{
                       fontFamily: "var(--font-mono), monospace",
@@ -612,6 +610,7 @@ function DesktopLayout() {
                       fontSize: "19px",
                       color: "var(--text-secondary)",
                       lineHeight: 1.7,
+                      margin: 0,
                     }}
                   >
                     {step.body}
