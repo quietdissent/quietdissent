@@ -20,97 +20,6 @@ const CONTACT_METHOD_LABELS: Record<string, string> = {
   either: "Either",
 };
 
-// ── HTML email: auto-reply to submitter ──────────────────────────────────────
-
-function autoReplyHtml(name: string): string {
-  const firstName = name.split(" ")[0];
-  return `<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width,initial-scale=1.0">
-  <title>We received your message — Quiet Dissent</title>
-</head>
-<body style="margin:0;padding:0;background-color:#111111;-webkit-font-smoothing:antialiased;">
-  <table width="100%" cellpadding="0" cellspacing="0" role="presentation"
-         style="background:#111111;padding:48px 20px;">
-    <tr>
-      <td align="center">
-        <table width="100%" cellpadding="0" cellspacing="0" role="presentation"
-               style="max-width:560px;background:#1A1A1A;border-radius:8px;
-                      border:1px solid rgba(255,255,255,0.07);overflow:hidden;">
-
-          <!-- Wordmark header -->
-          <tr>
-            <td style="padding:28px 40px;border-bottom:1px solid rgba(255,255,255,0.06);">
-              <span style="font-family:Georgia,'Times New Roman',serif;font-style:italic;
-                           font-size:20px;color:#FFFFF0;letter-spacing:-0.01em;">
-                Quiet Dissent
-              </span>
-            </td>
-          </tr>
-
-          <!-- Body -->
-          <tr>
-            <td style="padding:40px;">
-              <p style="margin:0 0 20px;font-family:-apple-system,BlinkMacSystemFont,
-                         'Segoe UI',Helvetica,Arial,sans-serif;font-size:16px;
-                         line-height:1.75;color:#FFFFF0;">
-                ${firstName ? `Hey ${firstName},` : "Hey,"}
-              </p>
-              <p style="margin:0 0 20px;font-family:-apple-system,BlinkMacSystemFont,
-                         'Segoe UI',Helvetica,Arial,sans-serif;font-size:16px;
-                         line-height:1.75;color:#C8C8C3;">
-                Thanks for reaching out. I've received your message and will be in touch
-                within 1–2 business days.
-              </p>
-              <p style="margin:0 0 32px;font-family:-apple-system,BlinkMacSystemFont,
-                         'Segoe UI',Helvetica,Arial,sans-serif;font-size:16px;
-                         line-height:1.75;color:#C8C8C3;">
-                In the meantime, if anything's urgent, you can reach me directly at
-                <a href="tel:6156734210"
-                   style="color:#5F8575;text-decoration:none;">(615) 673-4210</a>.
-              </p>
-
-              <!-- Divider -->
-              <div style="border-top:1px solid rgba(255,255,255,0.08);margin:0 0 32px;"></div>
-
-              <!-- Signature -->
-              <p style="margin:0 0 6px;font-family:-apple-system,BlinkMacSystemFont,
-                         'Segoe UI',Helvetica,Arial,sans-serif;font-size:15px;
-                         color:#5F8575;">
-                — Bailey Jones
-              </p>
-              <p style="margin:0;font-family:'Courier New',Courier,monospace;
-                         font-size:12px;color:#555552;letter-spacing:0.06em;
-                         text-transform:uppercase;">
-                Quiet Dissent&nbsp;&nbsp;·&nbsp;&nbsp;
-                <a href="https://quietdissent.com"
-                   style="color:#555552;text-decoration:none;">quietdissent.com</a>
-              </p>
-            </td>
-          </tr>
-
-          <!-- Footer note -->
-          <tr>
-            <td style="padding:16px 40px;border-top:1px solid rgba(255,255,255,0.04);">
-              <p style="margin:0;font-family:'Courier New',Courier,monospace;
-                         font-size:11px;color:#3A3A38;letter-spacing:0.04em;">
-                You received this because you submitted an inquiry at quietdissent.com
-              </p>
-            </td>
-          </tr>
-
-        </table>
-      </td>
-    </tr>
-  </table>
-</body>
-</html>`;
-}
-
-// ── HTML email: forwarded submission to owner ────────────────────────────────
-
 function forwardHtml(fields: {
   name: string;
   email: string;
@@ -150,7 +59,6 @@ function forwardHtml(fields: {
                style="max-width:600px;background:#1A1A1A;border-radius:8px;
                       border:1px solid rgba(255,255,255,0.07);overflow:hidden;">
 
-          <!-- Header -->
           <tr>
             <td style="padding:28px 40px;border-bottom:1px solid rgba(255,255,255,0.06);
                        background:#141414;">
@@ -164,7 +72,6 @@ function forwardHtml(fields: {
             </td>
           </tr>
 
-          <!-- Field table -->
           <tr>
             <td style="padding:32px 40px 24px;">
               <table width="100%" cellpadding="0" cellspacing="0" role="presentation">
@@ -180,7 +87,6 @@ function forwardHtml(fields: {
             </td>
           </tr>
 
-          <!-- Message block -->
           <tr>
             <td style="padding:0 40px 40px;">
               <p style="margin:0 0 12px;font-family:'Courier New',Courier,monospace;
@@ -197,7 +103,6 @@ function forwardHtml(fields: {
             </td>
           </tr>
 
-          <!-- Footer -->
           <tr>
             <td style="padding:16px 40px;border-top:1px solid rgba(255,255,255,0.04);">
               <p style="margin:0;font-family:'Courier New',Courier,monospace;
@@ -214,8 +119,6 @@ function forwardHtml(fields: {
 </body>
 </html>`;
 }
-
-// ── Route handler ────────────────────────────────────────────────────────────
 
 export async function POST(req: NextRequest) {
   let body: Record<string, string>;
@@ -243,28 +146,18 @@ export async function POST(req: NextRequest) {
   }) + " CT";
 
   try {
-    const [autoReply, forward] = await Promise.all([
-      resend.emails.send({
-        from: FROM_ADDRESS,
-        to: email,
-        subject: "We received your message — Quiet Dissent",
-        html: autoReplyHtml(name),
-        text: `Hey ${name.split(" ")[0]},\n\nThanks for reaching out. I've received your message and will be in touch within 1–2 business days.\n\nIn the meantime, if anything's urgent, you can reach me directly at (615) 673-4210.\n\n— Bailey Jones\nQuiet Dissent | quietdissent.com`,
-      }),
-      resend.emails.send({
-        from: FROM_ADDRESS,
-        to: FORWARD_TO,
-        replyTo: email,
-        subject: `New Inquiry — ${name}`,
-        html: forwardHtml({ name, email, business, industry, headache, source, contactMethod, phone, submittedAt }),
-        text: `New inquiry from ${name}\n\nName: ${name}\nEmail: ${email}\nBusiness: ${business}\nIndustry: ${industry}\nPhone: ${phone || "Not provided"}\nFound via: ${SOURCE_LABELS[source] ?? source}\nContact preference: ${CONTACT_METHOD_LABELS[contactMethod] ?? contactMethod}\nSubmitted: ${submittedAt}\n\nBiggest Operational Headache:\n${headache}`,
-      }),
-    ]);
+    const forward = await resend.emails.send({
+      from: FROM_ADDRESS,
+      to: FORWARD_TO,
+      replyTo: email,
+      subject: `New Inquiry — ${name}`,
+      html: forwardHtml({ name, email, business, industry, headache, source, contactMethod, phone, submittedAt }),
+      text: `New inquiry from ${name}\n\nName: ${name}\nEmail: ${email}\nBusiness: ${business}\nIndustry: ${industry}\nPhone: ${phone || "Not provided"}\nFound via: ${SOURCE_LABELS[source] ?? source}\nContact preference: ${CONTACT_METHOD_LABELS[contactMethod] ?? contactMethod}\nSubmitted: ${submittedAt}\n\nBiggest Operational Headache:\n${headache}`,
+    });
 
-    if (autoReply.error || forward.error) {
-      const msg = autoReply.error?.message ?? forward.error?.message ?? "Email send failed.";
-      console.error("[contact] Resend error:", autoReply.error, forward.error);
-      return NextResponse.json({ error: msg }, { status: 502 });
+    if (forward.error) {
+      console.error("[contact] Resend error:", forward.error);
+      return NextResponse.json({ error: forward.error.message ?? "Email send failed." }, { status: 502 });
     }
 
     return NextResponse.json({ success: true });
