@@ -3,9 +3,8 @@ import { Resend } from "resend";
 
 const resend = new Resend(process.env.RESEND_API_KEY);
 
-// Sending domain must be verified in Resend (quietdissent.com).
-// Until DNS records are confirmed, swap to "onboarding@resend.dev" temporarily.
-const FROM_ADDRESS = "hello@quietdissent.com";
+// Temporary sender for Resend testing until quietdissent.com is verified.
+const FROM_ADDRESS = "onboarding@resend.dev";
 const FORWARD_TO = "quietdissentco@gmail.com";
 
 const SOURCE_LABELS: Record<string, string> = {
@@ -229,7 +228,6 @@ export async function POST(req: NextRequest) {
 
   const { name, email, business, industry, headache, source, contactMethod, phone = "" } = body;
 
-  // Basic server-side validation
   if (!name || !email || !business || !industry || !headache || !source || !contactMethod) {
     return NextResponse.json({ error: "Missing required fields." }, { status: 400 });
   }
@@ -245,7 +243,6 @@ export async function POST(req: NextRequest) {
   }) + " CT";
 
   try {
-    // Fire both emails in parallel
     const [autoReply, forward] = await Promise.all([
       resend.emails.send({
         from: FROM_ADDRESS,
@@ -264,7 +261,6 @@ export async function POST(req: NextRequest) {
       }),
     ]);
 
-    // Surface Resend-level errors (e.g. unverified domain)
     if (autoReply.error || forward.error) {
       const msg = autoReply.error?.message ?? forward.error?.message ?? "Email send failed.";
       console.error("[contact] Resend error:", autoReply.error, forward.error);
