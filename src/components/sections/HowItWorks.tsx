@@ -46,72 +46,82 @@ function MobileLayout() {
   const numberRefs = useRef<(HTMLDivElement | null)[]>([]);
 
   useEffect(() => {
-    if (typeof window === "undefined") return;
+    if (typeof window === "undefined" || !sectionRef.current) return;
 
-    const section = sectionRef.current;
-    if (!section) return;
+    let rafId = 0;
 
-    gsap.fromTo(
-      ".step-item-mobile",
-      { x: -30, opacity: 0 },
-      {
-        x: 0,
-        opacity: 1,
-        stagger: 0.2,
-        duration: 0.9,
-        ease: "power2.out",
-        scrollTrigger: { trigger: ".step-item-mobile", start: "top 80%", once: true },
-      }
-    );
+    const ctx = gsap.context(() => {
+      gsap.fromTo(
+        ".step-item-mobile",
+        { x: -30, opacity: 0 },
+        {
+          x: 0,
+          opacity: 1,
+          stagger: 0.2,
+          duration: 0.9,
+          ease: "power2.out",
+          scrollTrigger: {
+            trigger: sectionRef.current,
+            start: "top 85%",
+            once: true,
+          },
+        }
+      );
 
-    const rafId = requestAnimationFrame(() => {
-      const svgEl = svgRef.current;
-      const pathEl = pathRef.current;
-      const colEl = svgColRef.current;
-      if (!svgEl || !pathEl || !colEl) return;
+      rafId = requestAnimationFrame(() => {
+        const svgEl = svgRef.current;
+        const pathEl = pathRef.current;
+        const colEl = svgColRef.current;
+        if (!svgEl || !pathEl || !colEl) return;
 
-      const colRect = colEl.getBoundingClientRect();
-      const h = colRect.height;
-      const cx = 10;
+        const colRect = colEl.getBoundingClientRect();
+        const h = colRect.height;
+        const cx = 10;
 
-      pathEl.setAttribute("d", `M ${cx} 0 L ${cx} ${h}`);
-      const totalLength = pathEl.getTotalLength();
+        pathEl.setAttribute("d", `M ${cx} 0 L ${cx} ${h}`);
+        const totalLength = pathEl.getTotalLength();
 
-      gsap.set(pathEl, { strokeDasharray: totalLength, strokeDashoffset: totalLength });
+        gsap.set(pathEl, { strokeDasharray: totalLength, strokeDashoffset: totalLength });
 
-      stepRefs.current.forEach((stepEl, i) => {
-        const circleEl = circleRefs.current[i];
-        if (!stepEl || !circleEl) return;
-        const stepRect = stepEl.getBoundingClientRect();
-        const cy = Math.max(0, stepRect.top - colRect.top + 10);
-        circleEl.setAttribute("cy", String(cy));
-        gsap.set(circleEl, { scale: 0, transformOrigin: "center center" });
+        stepRefs.current.forEach((stepEl, i) => {
+          const circleEl = circleRefs.current[i];
+          if (!stepEl || !circleEl) return;
+          const stepRect = stepEl.getBoundingClientRect();
+          const cy = Math.max(0, stepRect.top - colRect.top + 10);
+          circleEl.setAttribute("cy", String(cy));
+          gsap.set(circleEl, { scale: 0, transformOrigin: "center center" });
+        });
+
+        ScrollTrigger.create({
+          trigger: sectionRef.current,
+          start: "top 80%",
+          end: "bottom 20%",
+          scrub: 1,
+          onUpdate: (self) => {
+            const p = self.progress;
+            gsap.set(pathEl, { strokeDashoffset: totalLength * (1 - p) });
+            steps.forEach((_, i) => {
+              const threshold = (i + 0.6) / steps.length;
+              const circleEl = circleRefs.current[i];
+              const numEl = numberRefs.current[i];
+              if (p >= threshold) {
+                if (circleEl) gsap.to(circleEl, { scale: 1, duration: 0.3, transformOrigin: "center center", overwrite: "auto" });
+                if (numEl) gsap.to(numEl, { scale: 1.1, color: "var(--eucalyptus)", duration: 0.3, overwrite: "auto" });
+              } else {
+                if (numEl) gsap.to(numEl, { scale: 1, color: "var(--text-muted)", duration: 0.3, overwrite: "auto" });
+              }
+            });
+          },
+        });
+
+        ScrollTrigger.refresh();
       });
+    }, sectionRef);
 
-      ScrollTrigger.create({
-        trigger: section,
-        start: "top 80%",
-        end: "bottom 20%",
-        scrub: 1,
-        onUpdate: (self) => {
-          const p = self.progress;
-          gsap.set(pathEl, { strokeDashoffset: totalLength * (1 - p) });
-          steps.forEach((_, i) => {
-            const threshold = (i + 0.6) / steps.length;
-            const circleEl = circleRefs.current[i];
-            const numEl = numberRefs.current[i];
-            if (p >= threshold) {
-              if (circleEl) gsap.to(circleEl, { scale: 1, duration: 0.3, transformOrigin: "center center", overwrite: "auto" });
-              if (numEl) gsap.to(numEl, { scale: 1.1, color: "var(--eucalyptus)", duration: 0.3, overwrite: "auto" });
-            } else {
-              if (numEl) gsap.to(numEl, { scale: 1, color: "var(--text-muted)", duration: 0.3, overwrite: "auto" });
-            }
-          });
-        },
-      });
-    });
-
-    return () => { cancelAnimationFrame(rafId); };
+    return () => {
+      cancelAnimationFrame(rafId);
+      ctx.revert();
+    };
   }, []);
 
   return (
@@ -229,18 +239,15 @@ function MobileLayout() {
 // ─── Desktop: sticky scroll layout ────────────────────────────────────────────
 
 export default function HowItWorks() {
-  const [isMobile, setIsMobile] = useState(false);
-  const [mounted, setMounted] = useState(false);
+  const [isMobile, setIsMobile] = useState(true);
 
   useEffect(() => {
-    setMounted(true);
     const check = () => setIsMobile(window.innerWidth < 768);
     check();
     window.addEventListener("resize", check);
     return () => window.removeEventListener("resize", check);
   }, []);
 
-  if (!mounted) return null;
   if (isMobile) return <MobileLayout />;
 
   return <DesktopLayout />;
@@ -261,142 +268,81 @@ function DesktopLayout() {
   const activeStepRef = useRef(0);
 
   useEffect(() => {
-    if (typeof window === "undefined") return;
+    if (typeof window === "undefined" || !sectionRef.current) return;
 
-    const outer = outerRef.current;
-    if (!outer) return;
+    let rafId = 0;
 
-    rightContentRefs.current.forEach((el, i) => {
-      if (!el) return;
-      gsap.set(el, {
-        autoAlpha: i === 0 ? 1 : 0,
-        y: i === 0 ? 0 : 20,
-        pointerEvents: i === 0 ? "auto" : "none",
-      });
-    });
-
-    numberRefs.current.forEach((el, i) => {
-      if (!el) return;
-      gsap.set(el, {
-        color: i === 0 ? "#5F8575" : "var(--text-muted)",
-        opacity: i === 0 ? 1 : 0.35,
-      });
-    });
-
-    const rafId = requestAnimationFrame(() => {
-      const svgEl = svgRef.current;
-      const pathEl = pathRef.current;
-      const colEl = svgColRef.current;
-      if (!svgEl || !pathEl || !colEl) return;
-
-      const colRect = colEl.getBoundingClientRect();
-      const h = colRect.height;
-      const cx = 10;
-
-      pathEl.setAttribute("d", `M ${cx} 0 L ${cx} ${h}`);
-      const totalLength = pathEl.getTotalLength();
-      gsap.set(pathEl, { strokeDasharray: totalLength, strokeDashoffset: totalLength });
-
-      stepRefs.current.forEach((stepEl, i) => {
-        const circleEl = circleRefs.current[i];
-        if (!stepEl || !circleEl) return;
-        const stepRect = stepEl.getBoundingClientRect();
-        const cy = Math.max(0, stepRect.top - colRect.top + 10);
-        circleEl.setAttribute("cy", String(cy));
-        gsap.set(circleEl, { scale: 0, transformOrigin: "center center" });
-      });
-
-      ScrollTrigger.create({
-        trigger: outer,
-        start: "top 80%",
-        end: "bottom 20%",
-        scrub: 1,
-        onUpdate: (self) => {
-          const p = self.progress;
-          gsap.set(pathEl, { strokeDashoffset: totalLength * (1 - p) });
-          steps.forEach((_, i) => {
-            const threshold = (i + 0.6) / steps.length;
-            const circleEl = circleRefs.current[i];
-            if (p >= threshold) {
-              if (circleEl) gsap.to(circleEl, { scale: 1, duration: 0.3, transformOrigin: "center center", overwrite: "auto" });
-            }
-          });
-        },
-      });
-    });
-
-    const setActiveStep = (index: number) => {
-      const prev = activeStepRef.current;
-      if (prev === index) return;
-      activeStepRef.current = index;
-
-      if (headingRef.current) {
-        gsap.to(headingRef.current, {
-          opacity: index === 0 ? 1 : 0,
-          y: index === 0 ? 0 : -12,
-          duration: 0.4,
+    const ctx = gsap.context(() => {
+      gsap.fromTo(
+        ".step-item-mobile",
+        { x: -30, opacity: 0 },
+        {
+          x: 0,
+          opacity: 1,
+          stagger: 0.2,
+          duration: 0.9,
           ease: "power2.out",
+          scrollTrigger: {
+            trigger: sectionRef.current,
+            start: "top 85%",
+            once: true,
+          },
+        }
+      );
+
+      rafId = requestAnimationFrame(() => {
+        const svgEl = svgRef.current;
+        const pathEl = pathRef.current;
+        const colEl = svgColRef.current;
+        if (!svgEl || !pathEl || !colEl) return;
+
+        const colRect = colEl.getBoundingClientRect();
+        const h = colRect.height;
+        const cx = 10;
+
+        pathEl.setAttribute("d", `M ${cx} 0 L ${cx} ${h}`);
+        const totalLength = pathEl.getTotalLength();
+
+        gsap.set(pathEl, { strokeDasharray: totalLength, strokeDashoffset: totalLength });
+
+        stepRefs.current.forEach((stepEl, i) => {
+          const circleEl = circleRefs.current[i];
+          if (!stepEl || !circleEl) return;
+          const stepRect = stepEl.getBoundingClientRect();
+          const cy = Math.max(0, stepRect.top - colRect.top + 10);
+          circleEl.setAttribute("cy", String(cy));
+          gsap.set(circleEl, { scale: 0, transformOrigin: "center center" });
         });
-      }
 
-      const outgoing = rightContentRefs.current[prev];
-      if (outgoing) {
-        gsap.to(outgoing, {
-          autoAlpha: 0,
-          y: -20,
-          duration: 0.25,
-          ease: "power2.in",
-          pointerEvents: "none",
-          overwrite: "auto",
+        ScrollTrigger.create({
+          trigger: sectionRef.current,
+          start: "top 80%",
+          end: "bottom 20%",
+          scrub: 1,
+          onUpdate: (self) => {
+            const p = self.progress;
+            gsap.set(pathEl, { strokeDashoffset: totalLength * (1 - p) });
+            steps.forEach((_, i) => {
+              const threshold = (i + 0.6) / steps.length;
+              const circleEl = circleRefs.current[i];
+              const numEl = numberRefs.current[i];
+              if (p >= threshold) {
+                if (circleEl) gsap.to(circleEl, { scale: 1, duration: 0.3, transformOrigin: "center center", overwrite: "auto" });
+                if (numEl) gsap.to(numEl, { scale: 1.1, color: "var(--eucalyptus)", duration: 0.3, overwrite: "auto" });
+              } else {
+                if (numEl) gsap.to(numEl, { scale: 1, color: "var(--text-muted)", duration: 0.3, overwrite: "auto" });
+              }
+            });
+          },
         });
-      }
 
-      const incoming = rightContentRefs.current[index];
-      if (incoming) {
-        gsap.fromTo(
-          incoming,
-          { autoAlpha: 0, y: 20 },
-          {
-            autoAlpha: 1,
-            y: 0,
-            duration: 0.4,
-            ease: "power2.out",
-            delay: 0.05,
-            pointerEvents: "auto",
-            overwrite: "auto",
-          }
-        );
-      }
-
-      if (ghostNumRef.current) {
-        ghostNumRef.current.textContent = steps[index].number;
-      }
-
-      numberRefs.current.forEach((el, i) => {
-        if (!el) return;
-        gsap.to(el, {
-          color: i === index ? "#5F8575" : "var(--text-muted)",
-          opacity: i === index ? 1 : 0.35,
-          duration: 0.4,
-          ease: "power2.out",
-        });
+        ScrollTrigger.refresh();
       });
-    };
-
-    const triggers = triggerZoneRefs.current.map((zone, i) => {
-      if (!zone) return null;
-      return ScrollTrigger.create({
-        trigger: zone,
-        start: "top center",
-        once: false,
-        onEnter: () => setActiveStep(i),
-        onEnterBack: () => setActiveStep(i),
-      });
-    });
+    }, sectionRef);
 
     return () => {
       cancelAnimationFrame(rafId);
-      triggers.forEach((t) => t?.kill());
+      ctx.revert();
     };
   }, []);
 
@@ -624,3 +570,5 @@ function DesktopLayout() {
     </section>
   );
 }
+
+
