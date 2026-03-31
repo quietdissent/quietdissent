@@ -299,7 +299,7 @@ export default function Contact() {
                         style={{
                           fontFamily: "var(--font-instrument), serif",
                           fontSize: "clamp(24px, 3vw, 36px)",
-                          color: "#855f6f",
+                          color: "#7A9E7E",
                           marginBottom: "16px",
                           lineHeight: 1.2,
                         }}
