@@ -301,9 +301,10 @@ export default function Contact() {
                           fontSize: "clamp(24px, 3vw, 36px)",
                           color: "#FFFFF0",
                           marginBottom: "16px",
+                          lineHeight: 1.2,
                         }}
                       >
-                        Message sent.
+                        Thanks for reaching out to Quiet Dissent. I&apos;m so glad you&apos;re here.
                       </div>
                       <p
                         style={{
@@ -314,8 +315,7 @@ export default function Contact() {
                           margin: 0,
                         }}
                       >
-                        I&apos;ll be in touch within 1–2 business days. Check your inbox — a
-                        confirmation is on its way.
+                        Your message made it through the noise, and I&apos;ll be in touch within 48 hours. Looking forward to connecting.
                       </p>
                     </motion.div>
                   ) : (
