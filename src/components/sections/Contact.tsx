@@ -304,7 +304,9 @@ export default function Contact() {
                           lineHeight: 1.2,
                         }}
                       >
-                        Thanks for reaching out to Quiet Dissent. I&apos;m so glad you&apos;re here.
+                        Thanks for reaching out to Quiet Dissent.
+                        <br />
+                        I&apos;m so glad you&apos;re here.
                       </div>
                       <p
                         style={{
