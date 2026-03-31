@@ -217,6 +217,21 @@ export default function Contact() {
 
   useEffect(() => {
     if (typeof window === "undefined") return;
+    if (window.location.hash !== "#contact") return;
+
+    const scrollToContact = () => {
+      sectionRef.current?.scrollIntoView({
+        behavior: "auto",
+        block: "start",
+      });
+    };
+
+    const timeout = setTimeout(scrollToContact, 250);
+    return () => clearTimeout(timeout);
+  }, []);
+
+  useEffect(() => {
+    if (typeof window === "undefined") return;
     const bg = bgRef.current;
     if (!bg) return;
 
