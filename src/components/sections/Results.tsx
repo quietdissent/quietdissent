@@ -219,24 +219,37 @@ function DesktopLayout() {
 // ─── Mobile: clean stacked scroll ─────────────────────────────────────────────
 
 function MobileLayout() {
+  const sectionRef = useRef<HTMLElement>(null);
+
   useEffect(() => {
-    if (typeof window === "undefined") return;
-    gsap.fromTo(
-      ".result-card-mobile",
-      { y: 40, opacity: 0 },
-      {
-        y: 0,
-        opacity: 1,
-        stagger: 0.15,
-        duration: 0.8,
-        ease: "power2.out",
-        scrollTrigger: { trigger: ".result-card-mobile", start: "top 80%", once: true },
-      }
-    );
+    if (typeof window === "undefined" || !sectionRef.current) return;
+
+    const ctx = gsap.context(() => {
+      gsap.fromTo(
+        ".result-card-mobile",
+        { y: 40, opacity: 0 },
+        {
+          y: 0,
+          opacity: 1,
+          stagger: 0.15,
+          duration: 0.8,
+          ease: "power2.out",
+          scrollTrigger: {
+            trigger: sectionRef.current,
+            start: "top 85%",
+            once: true,
+          },
+        }
+      );
+
+      ScrollTrigger.refresh();
+    }, sectionRef);
+
+    return () => ctx.revert();
   }, []);
 
   return (
-    <section id="results" style={{ borderTop: "1px solid var(--border)" }}>
+    <section id="results" ref={sectionRef} style={{ borderTop: "1px solid var(--border)" }}>
       <div
         style={{
           backgroundColor: "#F5F4EF",
@@ -323,17 +336,16 @@ function MobileLayout() {
 // ─── Router ───────────────────────────────────────────────────────────────────
 
 export default function Results() {
-  const [isMobile, setIsMobile] = useState(false);
-  const [mounted, setMounted] = useState(false);
+  const [isMobile, setIsMobile] = useState(true);
 
   useEffect(() => {
-    setMounted(true);
     const check = () => setIsMobile(window.innerWidth < 768);
     check();
     window.addEventListener("resize", check);
     return () => window.removeEventListener("resize", check);
   }, []);
 
-  if (!mounted) return null;
   return isMobile ? <MobileLayout /> : <DesktopLayout />;
 }
+
+
