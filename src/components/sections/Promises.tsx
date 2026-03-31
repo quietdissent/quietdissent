@@ -61,9 +61,7 @@ function DesktopLayout() {
   }, []);
 
   return (
-    <section
-      id="promises"
-      style={{
+    <section id="promises"`r`n      style={{
         borderTop: "1px solid var(--border)",
         backgroundColor: "#F5F4EF",
       }}
@@ -192,26 +190,40 @@ function DesktopLayout() {
 // ─── Mobile: clean stacked list ───────────────────────────────────────────────
 
 function MobileLayout() {
+  const sectionRef = useRef<HTMLElement>(null);
+
   useEffect(() => {
-    if (typeof window === "undefined") return;
-    gsap.fromTo(
-      ".promise-item",
-      { y: 30, opacity: 0 },
-      {
-        y: 0,
-        opacity: 1,
-        stagger: 0.1,
-        duration: 0.7,
-        ease: "power2.out",
-        scrollTrigger: { trigger: ".promise-item", start: "top 80%", once: true },
-      }
-    );
+    if (typeof window === "undefined" || !sectionRef.current) return;
+
+    const ctx = gsap.context(() => {
+      gsap.fromTo(
+        ".promise-item",
+        { y: 30, opacity: 0 },
+        {
+          y: 0,
+          opacity: 1,
+          stagger: 0.1,
+          duration: 0.7,
+          ease: "power2.out",
+          scrollTrigger: {
+            trigger: sectionRef.current,
+            start: "top 85%",
+            once: true,
+          },
+        }
+      );
+
+      ScrollTrigger.refresh();
+    }, sectionRef);
+
+    return () => ctx.revert();
+  }, []);
+
+  return () => ctx.revert();
   }, []);
 
   return (
-    <section
-      id="promises"
-      style={{
+    <section id="promises"`r`n      style={{
         borderTop: "1px solid var(--border)",
         backgroundColor: "#F5F4EF",
         padding: "80px 0",
@@ -288,17 +300,18 @@ function MobileLayout() {
 // ─── Router ───────────────────────────────────────────────────────────────────
 
 export default function Promises() {
-  const [isMobile, setIsMobile] = useState(false);
-  const [mounted, setMounted] = useState(false);
+  const [isMobile, setIsMobile] = useState(true);
 
   useEffect(() => {
-    setMounted(true);
     const check = () => setIsMobile(window.innerWidth < 768);
     check();
     window.addEventListener("resize", check);
     return () => window.removeEventListener("resize", check);
   }, []);
 
-  if (!mounted) return null;
   return isMobile ? <MobileLayout /> : <DesktopLayout />;
 }
+
+
+
+
