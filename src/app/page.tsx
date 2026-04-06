@@ -36,10 +36,10 @@ export default function Home() {
         <Comparison />
         <Results />
         <Promises />
-        <FAQ />
         <PhoneContact />
         <Contact />
         <About />
+        <FAQ />
       </main>
       <Footer />
     </>
