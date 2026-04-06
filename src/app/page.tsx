@@ -12,6 +12,7 @@ import FAQ from "@/components/sections/FAQ";
 import Contact from "@/components/sections/Contact";
 import About from "@/components/sections/About";
 import Footer from "@/components/sections/Footer";
+import PhoneContact from "@/components/sections/PhoneContact";
 
 export default function Home() {
   return (
