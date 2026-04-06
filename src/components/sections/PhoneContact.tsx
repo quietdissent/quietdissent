@@ -65,7 +65,7 @@ export default function PhoneContact() {
             marginBottom: "20px",
           }}
         >
-          Quick Questions Welcome
+          Questions Welcome
         </motion.p>
 
         <motion.h2
@@ -82,8 +82,24 @@ export default function PhoneContact() {
             marginBottom: "16px",
           }}
         >
-          Rather just call?
+          Prefer to chat?
         </motion.h2>
+
+        <motion.p
+          initial={{ opacity: 0, y: 16 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.6, delay: 0.15 }}
+          style={{
+            fontFamily: "var(--font-instrument), serif",
+            fontSize: "22px",
+            color: "#111111",
+            lineHeight: 1.3,
+            marginBottom: "12px",
+          }}
+        >
+          We&apos;d love to hear from you.
+        </motion.p>
 
         <motion.p
           initial={{ opacity: 0, y: 16 }}
@@ -99,7 +115,7 @@ export default function PhoneContact() {
             maxWidth: "480px",
           }}
         >
-          Our line is answered around the clock -- business inquiries, general questions, scheduling. You will hear what AI-powered intake actually sounds like from the inside.
+          We're available around the clock for business inquiries, general questions, and scheduling -- a simple way to experience how the front line can run with more consistency.
         </motion.p>
 
         <div
