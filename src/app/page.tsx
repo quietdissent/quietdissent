@@ -1,4 +1,4 @@
-import Navigation from "@/components/sections/Navigation";
+﻿import Navigation from "@/components/sections/Navigation";
 import Hero from "@/components/sections/Hero";
 import Problem from "@/components/sections/Problem";
 import HowAIWorks from "@/components/sections/HowAIWorks";
@@ -20,7 +20,7 @@ export default function Home() {
       <Navigation />
       <main id="main">
         <Hero />
-        {/* Extended dissolve: dark hero breathes into the light — 280px gives it room */}
+        {/* Extended dissolve: dark hero breathes into the light â€” 280px gives it room */}
         <div
           style={{
             height: "280px",
@@ -37,6 +37,7 @@ export default function Home() {
         <Results />
         <Promises />
         <FAQ />
+        <PhoneContact />
         <Contact />
         <About />
       </main>
