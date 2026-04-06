@@ -1,4 +1,4 @@
-"use client";
+﻿"use client";
 
 import { useRef, useEffect } from "react";
 import { motion } from "framer-motion";
@@ -99,7 +99,7 @@ export default function PhoneContact() {
             maxWidth: "480px",
           }}
         >
-          Our line is answered around the clock — business inquiries, general questions, scheduling. You&apos;ll hear what AI-powered intake actually sounds like from the inside.
+          Our line is answered around the clock -- business inquiries, general questions, scheduling. You will hear what AI-powered intake actually sounds like from the inside.
         </motion.p>
 
         <div
@@ -118,7 +118,7 @@ export default function PhoneContact() {
           transition={{ duration: 0.6, delay: 0.3 }}
           style={{ display: "flex", alignItems: "center", gap: "24px", flexWrap: "wrap" }}
         >
-          
+          <a
             href={PHONE_HREF}
             style={{
               fontFamily: "var(--font-mono), monospace",
@@ -149,7 +149,7 @@ export default function PhoneContact() {
               letterSpacing: "0.01em",
             }}
           >
-            Nashville, TN&nbsp;&nbsp;·&nbsp;&nbsp;Available 24/7
+            Nashville, TN · Available 24/7
           </span>
         </motion.div>
       </div>
