@@ -318,7 +318,7 @@ function ServiceCard({
         {fullHeight && <div style={{ flex: 1 }} />}
 
         {/* CTA */}
-        <div>
+        <div style={{ display: "flex", flexDirection: "column", gap: "14px", alignItems: "flex-start" }}>
           <MagneticButton>
             <motion.a
               href={card.ctaHref}
@@ -341,6 +341,22 @@ function ServiceCard({
               {card.cta}
             </motion.a>
           </MagneticButton>
+          {index === 0 && (
+            <a
+              href="/quiz"
+              style={{
+                fontFamily: "var(--font-inter), sans-serif",
+                fontSize: "13px",
+                color: "rgba(95,133,117,0.75)",
+                textDecoration: "none",
+                borderBottom: "1px solid rgba(95,133,117,0.3)",
+                paddingBottom: "1px",
+                lineHeight: 1.5,
+              }}
+            >
+              Before you book, see where you stand.
+            </a>
+          )}
         </div>
       </div>
     </div>
