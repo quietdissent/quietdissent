@@ -8,6 +8,18 @@ const nextConfig: NextConfig = {
   turbopack: {
     root: path.resolve(__dirname),
   },
+  async rewrites() {
+    return [
+      {
+        source: "/quiz",
+        destination: "https://qd-quiz.vercel.app",
+      },
+      {
+        source: "/quiz/:path*",
+        destination: "https://qd-quiz.vercel.app/:path*",
+      },
+    ];
+  },
 };
 
 export default nextConfig;
