@@ -327,6 +327,21 @@ export default function Hero() {
               </motion.a>
             </MagneticButton>
 
+            <a
+              href="/quiz"
+              style={{
+                fontFamily: "var(--font-inter), sans-serif",
+                fontSize: "13px",
+                color: "rgba(95,133,117,0.75)",
+                textDecoration: "none",
+                borderBottom: "1px solid rgba(95,133,117,0.3)",
+                paddingBottom: "1px",
+                lineHeight: 1.5,
+              }}
+            >
+              Not sure where to start? Take the 3-minute readiness quiz →
+            </a>
+
             <span
               style={{
                 fontFamily: "var(--font-inter), sans-serif",
