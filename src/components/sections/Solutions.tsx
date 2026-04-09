@@ -347,9 +347,9 @@ function ServiceCard({
               style={{
                 fontFamily: "var(--font-inter), sans-serif",
                 fontSize: "13px",
-                color: "rgba(95,133,117,0.75)",
+                color: "#8AB5A0",
                 textDecoration: "none",
-                borderBottom: "1px solid rgba(95,133,117,0.3)",
+                borderBottom: "1px solid rgba(138,181,160,0.4)",
                 paddingBottom: "1px",
                 lineHeight: 1.5,
               }}
